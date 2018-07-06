@@ -1,6 +1,6 @@
 {
   "name": "rete-cli",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "",
   "bin": {
     "rete": "./bin/index.js"
