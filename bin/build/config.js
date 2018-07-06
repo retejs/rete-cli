@@ -10,7 +10,7 @@ const banner = pkg => {
         author,
         license
     } = pkg;
-    const text = `/*!\n* ${name} v${version} \n* (c) ${new Date().getFullYear()} ${author} License \n* Released under the ${license} license.\n*/`;
+    const text = `/*!\n* ${name} v${version} \n* (c) ${new Date().getFullYear()} ${author} \n* Released under the ${license} license.\n*/`;
 
     return text;
 }
