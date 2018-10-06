@@ -22,10 +22,10 @@ module.exports = ({
     globals = {},
     babelPlugins = [],
     ...options
-}, pkg) => ({
+}, pkg, debug = false) => ({
     input,
     output: {
-        file: `build/${Case.kebab(name)}.min.js`,
+        file: `build/${Case.kebab(name)}.${debug?'debug':'min'}.js`,
         name,
         format: 'umd',
         sourcemap: true,
@@ -42,7 +42,7 @@ module.exports = ({
         babel({
             exclude: 'node_modules/**',
             babelrc: false,
-            presets: [
+            presets: debug ? [] : [
                 [require('babel-preset-env'), {
                     modules: false
                 }],
@@ -56,12 +56,14 @@ module.exports = ({
                 ...babelPlugins
             ]
         }),
-        regenerator(),
-        uglify({
-            output: {
-                preamble: banner(pkg)
-            }
-        })
+        ...debug?[]:[
+            regenerator(),
+            uglify({
+                output: {
+                    preamble: banner(pkg)
+                }
+            })
+        ]
     ],
     ...options
 });
