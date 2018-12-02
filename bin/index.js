@@ -2,6 +2,7 @@
 
 const program = require('commander');
 
+program.version(require('../package.json').version)
 program.option('-b --build <config>', 'Build package using Rollup and Babel');
 program.option('-w --watch');
 program.option('-p --plugin <name>', 'Create plugin boilerplate');
