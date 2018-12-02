@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "description": "",
   "main": "build/{{bundleName}}.min.js",
+  "module": "build/{{bundleName}}.debug.js",
   "scripts": {
     "build": "rete --build rete.config.js",
     "build:dev": "rete --build rete.config.js --watch",
