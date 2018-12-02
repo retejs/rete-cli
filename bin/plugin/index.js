@@ -10,7 +10,7 @@ function renderTemplates(folder, locals) {
     const to = keys.map(key => locals[key]);
 
     replace.sync({
-        files: `${folder}/*`,
+        files: `${folder}/**/*`,
         from,
         to
     })
@@ -28,6 +28,7 @@ module.exports = async (program) => {
     const namespace = Case.pascal(`${name} plugin`);
     const bundleName = Case.kebab(`${name} plugin`);
     const folderName = Case.kebab(`${name} plugin`);
+    const id = Case.kebab(name);
     const cliVersion = version;
     
     createDir(folderName);
@@ -37,6 +38,7 @@ module.exports = async (program) => {
         namespace,
         bundleName,
         folderName,
-        cliVersion
+        cliVersion,
+        id
     });
 }

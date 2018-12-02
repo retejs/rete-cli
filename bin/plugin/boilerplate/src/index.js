@@ -3,5 +3,6 @@ function install(editor, params) {
 }
 
 export default {
+    name: '{{id}}',
     install
 }
