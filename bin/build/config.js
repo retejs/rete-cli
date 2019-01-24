@@ -27,7 +27,7 @@ module.exports = ({
     output: {
         file: `build/${Case.kebab(name)}.${esm?'esm':'min'}.js`,
         name,
-        format: 'umd',
+        format: esm?'es':'umd',
         sourcemap: true,
         banner: banner(pkg),
         globals
