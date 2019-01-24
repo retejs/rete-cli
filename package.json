@@ -1,6 +1,6 @@
 {
   "name": "rete-cli",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "",
   "bin": {
     "rete": "./bin/index.js"
@@ -17,6 +17,7 @@
     "@babel/preset-env": "^7.3.1",
     "@babel/register": "^7.0.0",
     "babel-eslint": "^8.2.5",
+    "babel-preset-env": "^1.7.0",
     "case": "^1.5.5",
     "commander": "^2.16.0",
     "copy-dir": "^0.4.0",

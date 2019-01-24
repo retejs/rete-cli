@@ -3,6 +3,7 @@ const buildConfig = require('./config');
 const { buildDev } = require('./dev');
 
 require('@babel/register')({
+    presets: ['env'],
     ignore: [/node_modules/]
 })
 
