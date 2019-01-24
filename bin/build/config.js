@@ -22,10 +22,10 @@ module.exports = ({
     globals = {},
     babelPlugins = [],
     ...options
-}, pkg, debug = false) => ({
+}, pkg, esm = false) => ({
     input,
     output: {
-        file: `build/${Case.kebab(name)}.${debug?'debug':'min'}.js`,
+        file: `build/${Case.kebab(name)}.${esm?'esm':'min'}.js`,
         name,
         format: 'umd',
         sourcemap: true,
@@ -42,21 +42,15 @@ module.exports = ({
         babel({
             exclude: 'node_modules/**',
             babelrc: false,
-            presets: debug ? [] : [
-                [require('babel-preset-env'), {
-                    modules: false
-                }],
-                require('babel-preset-es2015-rollup')
-            ],
+            presets: [ require('@babel/preset-env') ],
             plugins: [
-                require('babel-plugin-typecheck').default,
-                require('babel-plugin-syntax-flow'),
-                require('babel-plugin-transform-flow-strip-types'),
-                require('babel-plugin-transform-object-rest-spread'),
+                // require('babel-plugin-typecheck'),
+                require('@babel/plugin-transform-flow-strip-types'),
+                require('@babel/plugin-proposal-object-rest-spread'),
                 ...babelPlugins
             ]
         }),
-        ...debug?[]:[
+        ...esm?[]:[
             regenerator(),
             uglify({
                 output: {

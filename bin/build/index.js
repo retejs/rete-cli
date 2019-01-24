@@ -2,8 +2,8 @@ const { rollup } = require('rollup');
 const buildConfig = require('./config');
 const { buildDev } = require('./dev');
 
-require('babel-register')({
-    presets: [require('babel-preset-env')]
+require('@babel/register')({
+    ignore: [/node_modules/]
 })
 
 function resources(program) {
@@ -24,8 +24,8 @@ module.exports = async (program) => {
             let targetConfig = buildConfig(sourceConfig, pkg, true);
             
             await buildDev(sourceConfig, targetConfig)
-        } else for (let debug of [true, false]) {
-            let targetConfig = buildConfig(sourceConfig, pkg, debug);
+        } else for (let esm of [true, false]) {
+            let targetConfig = buildConfig(sourceConfig, pkg, esm);
             let bundle = await rollup(targetConfig);
 
             await bundle.generate(targetConfig.output);
