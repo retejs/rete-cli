@@ -6,7 +6,7 @@ const { version } = require('../../package.json');
 
 function renderTemplates(folder, locals) {
     const keys = Object.keys(locals);
-    const from = keys.map(key => '{{'+key+'}}');
+    const from = keys.map(key => new RegExp('{{'+key+'}}', 'g'));
     const to = keys.map(key => locals[key]);
 
     replace.sync({
