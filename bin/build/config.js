@@ -44,7 +44,6 @@ module.exports = ({
             babelrc: false,
             presets: [ require('@babel/preset-env') ],
             plugins: [
-                // require('babel-plugin-typecheck'),
                 require('@babel/plugin-transform-flow-strip-types'),
                 require('@babel/plugin-proposal-object-rest-spread'),
                 ...babelPlugins
