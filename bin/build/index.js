@@ -7,6 +7,12 @@ require('@babel/register')({
     ignore: [/node_modules/]
 })
 
+let opts = [
+    { suffix: 'min', format: 'umd', minify: true, polyfill: true },
+    { suffix: 'esm', format: 'es' },
+    { suffix: 'common', format: 'cjs' }
+];
+
 function resources(program) {
     let configPath = `${process.cwd()}/${program.build}`;
     let packagePath = `${process.cwd()}/package.json`;
@@ -18,19 +24,19 @@ function resources(program) {
 
 module.exports = async (program) => {
     let { config, pkg } = resources(program);
-    let configs = config instanceof Array?config:[config];
 
-    for (let sourceConfig of configs) {
-        if (program.watch) {
-            let targetConfig = buildConfig(sourceConfig, pkg, true);
-            
-            await buildDev(sourceConfig, targetConfig)
-        } else for (let esm of [true, false]) {
-            let targetConfig = buildConfig(sourceConfig, pkg, esm);
-            let bundle = await rollup(targetConfig);
-
-            await bundle.generate(targetConfig.output);
-            await bundle.write(targetConfig.output);
-        }
+    if (program.watch) {
+        let targetConfig = buildConfig(config, pkg, opts[0]);
+        
+        return await buildDev(config, targetConfig);   
     }
+    
+    for (let opt of opts) {
+        let targetConfig = buildConfig(config, pkg, opt);
+        let bundle = await rollup(targetConfig);
+
+        await bundle.generate(targetConfig.output);
+        await bundle.write(targetConfig.output);
+    }
+    
 }

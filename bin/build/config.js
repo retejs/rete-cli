@@ -22,15 +22,16 @@ module.exports = ({
     globals = {},
     babelPlugins = [],
     ...options
-}, pkg, esm = false) => ({
+}, pkg, { suffix, format, minify = false, polyfill = false }) => ({
     input,
     output: {
-        file: `build/${Case.kebab(name)}.${esm?'esm':'min'}.js`,
+        file: `build/${Case.kebab(name)}.${suffix}.js`,
         name,
-        format: esm?'es':'umd',
+        format,
         sourcemap: true,
         banner: banner(pkg),
-        globals
+        globals,
+        exports: 'named'
     },
     watch: {
         include: 'src/**',
@@ -49,14 +50,12 @@ module.exports = ({
                 ...babelPlugins
             ]
         }),
-        ...esm?[]:[
-            regenerator(),
-            uglify({
-                output: {
-                    preamble: banner(pkg)
-                }
-            })
-        ]
+        ...minify?[uglify({
+            output: {
+                preamble: banner(pkg)
+            }
+        })]:[],
+        ...polyfill?[regenerator()]:[]
     ],
     ...options
 });

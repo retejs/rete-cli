@@ -2,7 +2,7 @@
   "name": "{{packageName}}",
   "version": "0.1.0",
   "description": "",
-  "main": "build/{{bundleName}}.min.js",
+  "main": "build/{{bundleName}}.common.js",
   "module": "build/{{bundleName}}.esm.js",
   "scripts": {
     "build": "rete --build rete.config.js",
