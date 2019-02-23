@@ -43,12 +43,16 @@ module.exports = ({
         babel({
             exclude: 'node_modules/**',
             babelrc: false,
-            presets: [ require('@babel/preset-env') ],
+            presets: [
+                require('@babel/preset-env'),
+                require('@babel/preset-typescript')
+            ],
             plugins: [
-                require('@babel/plugin-transform-flow-strip-types'),
+                require('@babel/plugin-proposal-class-properties'),
                 require('@babel/plugin-proposal-object-rest-spread'),
                 ...babelPlugins
-            ]
+            ],
+            extensions: ['.ts', '.js']
         }),
         ...minify?[uglify({
             output: {
