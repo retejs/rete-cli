@@ -2,6 +2,7 @@ const babel = require('rollup-plugin-babel');
 const Case = require('case');
 const regenerator = require('rollup-plugin-regenerator');
 const { uglify } = require('rollup-plugin-uglify');
+const resolve = require('rollup-plugin-node-resolve');
 
 const banner = pkg => {
     const {
@@ -40,6 +41,9 @@ module.exports = ({
     external: Object.keys(globals),
     plugins: [
         ...plugins,
+        resolve({
+            extensions: ['.ts', '.js']
+        }),
         babel({
             exclude: 'node_modules/**',
             babelrc: false,
