@@ -5,8 +5,12 @@
   "bin": {
     "rete": "./bin/index.js"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Vitaliy Stoliarov",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/retejs/rete-cli.git"
+  },
   "dependencies": {
     "@babel/core": "7.3.3",
     "@babel/plugin-proposal-class-properties": "^7.3.3",
