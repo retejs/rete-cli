@@ -3,6 +3,7 @@ const Case = require('case');
 const regenerator = require('rollup-plugin-regenerator');
 const { uglify } = require('rollup-plugin-uglify');
 const resolve = require('rollup-plugin-node-resolve');
+const commonjs = require('rollup-plugin-commonjs');
 
 const banner = pkg => {
     const {
@@ -41,6 +42,7 @@ module.exports = ({
     external: Object.keys(globals),
     plugins: [
         ...plugins,
+        commonjs(),
         resolve({
             extensions: ['.ts', '.js']
         }),
