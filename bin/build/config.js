@@ -23,6 +23,8 @@ module.exports = ({
     plugins = [],
     globals = {},
     babelPlugins = [],
+    babelPresets = [],
+    extensions = ['.js'],
     ...options
 }, pkg, { suffix, format, minify = false, polyfill = false }) => ({
     input,
@@ -44,21 +46,21 @@ module.exports = ({
         ...plugins,
         commonjs(),
         resolve({
-            extensions: ['.ts', '.js']
+            extensions
         }),
         babel({
             exclude: 'node_modules/**',
             babelrc: false,
             presets: [
                 require('@babel/preset-env'),
-                require('@babel/preset-typescript')
+                ...babelPresets
             ],
             plugins: [
                 require('@babel/plugin-proposal-class-properties'),
                 require('@babel/plugin-proposal-object-rest-spread'),
                 ...babelPlugins
             ],
-            extensions: ['.ts', '.js']
+            extensions
         }),
         ...minify?[uglify({
             output: {
