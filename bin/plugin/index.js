@@ -21,8 +21,7 @@ function createDir(folder) {
     copyDir.sync(`${__dirname}/boilerplate`, folder);
 }
 
-module.exports = async (program) => {
-    const name = program.plugin.toLowerCase();
+module.exports = async (name) => {
     const pluginName = Case.capital(`${name}`);
     const packageName = Case.kebab(`rete ${name} plugin`);
     const namespace = Case.pascal(`${name} plugin`);

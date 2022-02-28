@@ -13,8 +13,8 @@ let opts = [
     { suffix: 'common', format: 'cjs' }
 ];
 
-function resources(program) {
-    let configPath = `${process.cwd()}/${program.build}`;
+function resources(configFile) {
+    let configPath = `${process.cwd()}/${configFile}`;
     let packagePath = `${process.cwd()}/package.json`;
     let config = require(configPath).default;
     let pkg = require(packagePath);
@@ -22,10 +22,10 @@ function resources(program) {
     return { config, pkg };
 }
 
-module.exports = async (program) => {
-    let { config, pkg } = resources(program);
+module.exports = async (configFile, watch) => {
+    let { config, pkg } = resources(configFile);
 
-    if (program.watch) {
+    if (watch) {
         let targetConfig = buildConfig(config, pkg, opts[0]);
         
         return await buildDev(config, targetConfig);   

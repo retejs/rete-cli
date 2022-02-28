@@ -1,5 +1,5 @@
 {
-  "parser": "babel-eslint",
+  "parser": "@babel/eslint-parser",
   "globals": {
     "document": true,
     "alight": true,
@@ -11,6 +11,9 @@
     "HTMLElement": true,
     "alert": true,
     "prompt": true
+  },
+  "env": {
+    "node": true
   },
   "rules": {
     "comma-dangle": [1, "never"],
@@ -65,7 +68,7 @@
     "new-cap": [1, {
       "newIsCap": true
     }],
-    "newline-after-var": [1, "always"],
+    "newline-after-var": [0, "always"],
     "no-mixed-spaces-and-tabs": [1, "smart-tabs"],
     "no-multiple-empty-lines": [1, {
       "max": 1
