@@ -1,12 +1,9 @@
 {
   "name": "rete-cli",
-  "version": "0.6.1-rc2",
+  "version": "0.6.1",
   "description": "",
   "bin": {
     "rete": "./bin/index.js"
-  },
-  "scripts": {
-    "test": "rollup -c rollup.config.js"
   },
   "author": "Vitaliy Stoliarov",
   "license": "MIT",
