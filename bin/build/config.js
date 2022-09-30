@@ -1,4 +1,5 @@
 const { babel } = require('@rollup/plugin-babel');
+const { nodeResolve } = require('@rollup/plugin-node-resolve');
 const Case = require('case');
 
 const banner = pkg => {
@@ -40,6 +41,9 @@ module.exports = ({
     external: Object.keys(globals),
     plugins: [
         ...plugins,
+        nodeResolve({
+            extensions
+        }),
         babel({
             exclude: 'node_modules/**',
             babelrc: false,
@@ -52,6 +56,7 @@ module.exports = ({
                 require('@babel/plugin-proposal-object-rest-spread'),
                 ...babelPlugins
             ],
+            babelHelpers: 'bundled',
             extensions
         }),
     ],
