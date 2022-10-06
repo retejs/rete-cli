@@ -18,12 +18,16 @@ const program = createCommand()
 program.version(require('../package.json').version)
 program.option('-b --build <config>', 'Build package using Rollup and Babel')
 program.option('-w --watch')
+program.option('-l --lint')
+program.option('--fix')
 program.parse(process.argv);
 
 const options = program.opts<InterfaceCLI>()
 
 if (options.build) {
     build(options.build, options.watch);
+} else if (options.lint) {
+    lint(options.fix)
 }
 
 export {}

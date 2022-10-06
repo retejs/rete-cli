@@ -3,6 +3,7 @@ import chalk from 'chalk'
 import ms from 'pretty-ms'
 import { ReteOptions } from './types';
 import { generateTypes } from './gen-types';
+import { lint } from '../lint/linter';
 import { safeExec } from './utils';
 
 export async function buildDev(sourceConfig: ReteOptions, config: RollupOptions) {
@@ -12,6 +13,7 @@ export async function buildDev(sourceConfig: ReteOptions, config: RollupOptions)
         switch (e.code) {
         case 'START':
             console.log('\n\n\n')
+            safeExec(lint, chalk.redBright('Linting failed'))
             safeExec(generateTypes, chalk.redBright('Type generating failed'))
             break;
         case 'BUNDLE_START':

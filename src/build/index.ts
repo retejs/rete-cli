@@ -4,6 +4,7 @@ import { buildDev } from './dev'
 import { Pkg, ReteOptions } from './types';
 import { importReteConfig } from './config-importer';
 import { generateTypes } from './gen-types';
+import { lint } from '../lint/linter';
 import chalk from 'chalk'
 import { performance } from 'node:perf_hooks';
 import ms from 'pretty-ms'
@@ -37,6 +38,8 @@ export default async (configPath: string, watch?: boolean) => {
 
     await safeExec(generateTypes, chalk.redBright('Type generating failed'), 1)
     console.log(chalk.green('Types generated!'))
+    await safeExec(lint, chalk.redBright('Linting failed'), 1)
+    console.log(chalk.green('Linting completed!'))
 
     const targetConfig = getRollupConfig(config, outputs, pkg);
     const bundle = await rollup(targetConfig);
