@@ -1,0 +1,20 @@
+{
+  "name": "{{packageName}}",
+  "version": "0.1.0",
+  "description": "",
+  "main": "build/{{bundleName}}.common.js",
+  "module": "build/{{bundleName}}.esm.js",
+  "scripts": {
+    "build": "rete --build rete.config.js",
+    "build:dev": "rete --build rete.config.js --watch",
+    "prepublishOnly": "npm run build",
+    "lint": "rete --list"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {},
+  "devDependencies": {
+    "rete-cli": "{{cliVersion}}",
+    "typescript": "4.8.4"
+  }
+}
