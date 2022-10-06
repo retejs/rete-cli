@@ -11,7 +11,7 @@ async function createDir(folder: string) {
 
     await fs.promises.access(boilerplateFolder)
     await fs.promises.mkdir(folder);
-    await copyDir(boilerplateFolder, folder)
+    await copyDir(boilerplateFolder, folder, { dot: true })
 }
 
 export default async function (name: string) {
