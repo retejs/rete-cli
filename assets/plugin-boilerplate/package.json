@@ -5,10 +5,10 @@
   "main": "build/{{bundleName}}.common.js",
   "module": "build/{{bundleName}}.esm.js",
   "scripts": {
-    "build": "rete --build rete.config.ts",
-    "build:dev": "rete --build rete.config.ts --watch",
+    "build": "rete build -c rete.config.ts",
+    "build:dev": "rete build -c rete.config.ts --watch",
     "prepublishOnly": "npm run build",
-    "lint": "rete --lint"
+    "lint": "rete lint"
   },
   "author": "",
   "license": "ISC",
