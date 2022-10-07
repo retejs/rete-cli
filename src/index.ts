@@ -6,36 +6,43 @@ import plugin from './plugin'
 import lint from './lint'
 import test from './test'
 
-interface InterfaceCLI {
-  build?: string;
-  watch?: boolean;
-  lint?: boolean;
-  fix?: boolean;
-  plugin?: string;
-  test?: boolean
-}
-
 const program = createCommand()
 
 program.version(require('../package.json').version)
-program.option('-b --build <config>', 'Build package using Rollup and Babel')
-program.option('-w --watch')
-program.option('-l --lint')
-program.option('--fix')
-program.option('-p --plugin <name>', 'Create plugin boilerplate')
-program.option('-t --test', 'Run tests')
+
+program
+    .command('build')
+    .description('Build package using Rollup and Babel')
+    .requiredOption('-c --config <config>')
+    .option('-w --watch')
+    .action((options: { config: string, watch?: boolean }) => {
+        build(options.config, options.watch)
+    })
+
+program
+    .command('lint')
+    .description('Lint using ESLint and TS parser')
+    .option('--fix')
+    .action((options: { fix?: boolean }) => {
+        lint(options.fix)
+    })
+
+program
+    .command('plugin')
+    .description('Create plugin boilerplate')
+    .requiredOption('-n --name <name>')
+    .action((options: { name: string }) => {
+        plugin(options.name)
+    })
+
+program
+    .command('test')
+    .description('Run tests')
+    .description('Run tests using Jest')
+    .action(() => {
+        test()
+    })
+
 program.parse(process.argv);
-
-const options = program.opts<InterfaceCLI>()
-
-if (options.build) {
-    build(options.build, options.watch);
-} else if (options.plugin) {
-    plugin(options.plugin);
-} else if (options.lint) {
-    lint(options.fix)
-} else if (options.test) {
-    test()
-}
 
 export {}
