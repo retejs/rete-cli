@@ -19,22 +19,22 @@ const outputs: OutputOptions[] = [
     { suffix: 'common', format: 'cjs' }
 ];
 
-async function buildForDev(config: ReteOptions, pkg: Pkg) {
-    const targetConfig = getRollupConfig(config, outputs, pkg);
+async function buildForDev(config: ReteOptions, pkg: Pkg, outputDirectory: string) {
+    const targetConfig = getRollupConfig(config, outputs, pkg, outputDirectory);
 
-    return await buildDev(config.name, targetConfig);
+    return await buildDev(config.name, targetConfig, outputDirectory);
 }
 
 // eslint-disable-next-line max-statements
-async function build(config: ReteOptions, pkg: Pkg) {
+async function build(config: ReteOptions, pkg: Pkg, outputDirectory: string) {
     const time = performance.now()
 
-    await safeExec(generateTypes, messages.typesFail, 1)
+    await safeExec(() => generateTypes(outputDirectory), messages.typesFail, 1)
     console.log(messages.typesSuccess)
     await safeExec(lint, messages.lintingFail, 1)
     console.log(messages.lintingSuccess)
 
-    const targetConfig = getRollupConfig(config, outputs, pkg);
+    const targetConfig = getRollupConfig(config, outputs, pkg, outputDirectory);
     const bundle = await rollup(targetConfig);
 
     for (const output of targetConfig.output) {
@@ -45,16 +45,17 @@ async function build(config: ReteOptions, pkg: Pkg) {
     console.log('Completed in', ms(performance.now() - time, { secondsDecimalDigits: 1 }))
 }
 
-export default async (configPath: string, watch?: boolean) => {
+export default async (configPath: string, watch?: boolean, outputDirectory?: string) => {
     const fullPath = join(process.cwd(), configPath)
     const config = importReteConfig(fullPath);
 
     const packagePath = join(process.cwd(), 'package.json')
     const pkg = require(packagePath);
+    const output = outputDirectory || process.cwd()
 
     if (watch) {
-        await buildForDev(config, pkg)
+        await buildForDev(config, pkg, output)
     } else {
-        await build(config, pkg)
+        await build(config, pkg, output)
     }
 }

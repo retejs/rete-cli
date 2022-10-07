@@ -16,8 +16,9 @@ program
     .description('Build package using Rollup and Babel')
     .requiredOption('-c --config <config>')
     .option('-w --watch')
-    .action((options: { config: string, watch?: boolean }) => {
-        build(options.config, options.watch)
+    .option('-o --output <path>')
+    .action((options: { config: string, watch?: boolean, output?: string }) => {
+        build(options.config, options.watch, options.output)
     })
 
 program

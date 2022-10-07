@@ -1,10 +1,11 @@
 import execa from 'execa'
+import { join } from 'path'
 
-export async function generateTypes() {
+export async function generateTypes(outputDirectory: string) {
     await execa('tsc', [
         '-d',
         '--target', 'es5',
-        '--outDir', 'types',
+        '--outDir', join(outputDirectory, 'types'),
         '--skipLibCheck',
         '--declarationMap',
         '--downlevelIteration',
