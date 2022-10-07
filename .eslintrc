@@ -1,7 +1,7 @@
 {
   "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
   "parser": "@typescript-eslint/parser",
-  "plugins": ["@typescript-eslint"],
+  "plugins": ["@typescript-eslint", "simple-import-sort"],
   "root": true,
   "globals": {
     "document": true,
@@ -20,7 +20,6 @@
     "no-cond-assign": 1,
     "no-console": 0,
     "no-constant-condition": 1,
-    "sort-imports": "warn",
     "no-duplicate-imports": "warn",
     "no-control-regex": 1,
     "no-dupe-args": 2,
@@ -82,6 +81,8 @@
       "ignoreComments": true
     }],
     "max-params": [1, 6],
-    "max-statements": [1, 10]
+    "max-statements": [1, 10],
+    "simple-import-sort/imports": "warn",
+    "simple-import-sort/exports": "warn"
   }
 }

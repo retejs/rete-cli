@@ -1,9 +1,9 @@
-import { RollupOptions, watch } from 'rollup'
 import chalk from 'chalk'
 import ms from 'pretty-ms'
-import { ReteOptions } from './types';
-import { generateTypes } from './gen-types';
+import { RollupOptions, watch } from 'rollup'
+
 import { lint } from '../lint/linter';
+import { generateTypes } from './gen-types';
 import { safeExec } from './utils';
 
 export async function buildDev(sourceConfig: ReteOptions, config: RollupOptions) {

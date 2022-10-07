@@ -1,15 +1,16 @@
-import { rollup } from 'rollup'
-import { getRollupConfig, OutputOptions } from './config'
-import { buildDev } from './dev'
-import { Pkg, ReteOptions } from './types';
-import { importReteConfig } from './config-importer';
-import { generateTypes } from './gen-types';
-import { lint } from '../lint/linter';
-import chalk from 'chalk'
 import { performance } from 'node:perf_hooks';
-import ms from 'pretty-ms'
-import { safeExec } from './utils';
 
+import chalk from 'chalk'
+import ms from 'pretty-ms'
+import { rollup } from 'rollup'
+
+import { lint } from '../lint/linter';
+import { getRollupConfig, OutputOptions } from './config'
+import { importReteConfig } from './config-importer';
+import { buildDev } from './dev'
+import { generateTypes } from './gen-types';
+import { Pkg, ReteOptions } from './types';
+import { safeExec } from './utils';
 
 const outputs: OutputOptions[] = [
     { suffix: 'min', format: 'umd', minify: true },

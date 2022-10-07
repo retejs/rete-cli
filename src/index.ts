@@ -1,9 +1,10 @@
 #!/usr/bin/env node
 
 import { createCommand } from 'commander'
+
 import build from './build'
-import plugin from './plugin'
 import lint from './lint'
+import plugin from './plugin'
 import test from './test'
 
 const program = createCommand()

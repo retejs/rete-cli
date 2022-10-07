@@ -1,7 +1,8 @@
+import Case from 'case'
 import fs from 'fs'
 import { join } from 'path'
-import Case from 'case'
 import copyDir from 'recursive-copy'
+
 import { renderTemplates } from './render'
 
 const { version } = require('../../package.json')

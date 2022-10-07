@@ -3,8 +3,9 @@ import { nodeResolve } from '@rollup/plugin-node-resolve'
 import Case from 'case'
 import { OutputOptions as RollupOutputOptions, RollupOptions } from 'rollup'
 import { terser } from 'rollup-plugin-terser'
-import { Pkg, ReteOptions } from './types'
+
 import { getBanner } from './banner'
+import { Pkg, ReteOptions } from './types'
 
 export interface OutputOptions {
     suffix: string;
