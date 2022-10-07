@@ -3,32 +3,27 @@ import ms from 'pretty-ms'
 import { RollupOptions, watch } from 'rollup'
 
 import { lint } from '../lint/linter';
+import { messages } from './consts';
 import { generateTypes } from './gen-types';
 import { safeExec } from './utils';
 
-export async function buildDev(sourceConfig: ReteOptions, config: RollupOptions) {
+export async function buildDev(name: string, config: RollupOptions) {
     const watcher = watch(config);
 
+    // eslint-disable-next-line max-statements
     watcher.on('event', async e => {
-        switch (e.code) {
-        case 'START':
+        if (e.code === 'START') {
             console.log('\n\n\n')
-            safeExec(lint, chalk.redBright('Linting failed'))
-            safeExec(generateTypes, chalk.redBright('Type generating failed'))
-            break;
-        case 'BUNDLE_START':
-            console.log(chalk.green(`Start building ${sourceConfig.name} ...`));
-            break;
-        case 'BUNDLE_END':
-            // eslint-disable-next-line no-case-declarations
+
+            safeExec(lint, messages.lintingFail)
+            safeExec(generateTypes, messages.typesFail)
+        } else if (e.code === 'BUNDLE_START') {
+            console.log(chalk.green(`Start building ${name} ...`));
+        } else if (e.code === 'BUNDLE_END') {
             const duration = ms(e.duration, { secondsDecimalDigits: 1 })
 
-            console.log(chalk.green(`Build ${sourceConfig.name} completed in ${duration}`));
-            break;
-        case 'END':
-            break;
-        default:
-            // eslint-disable-next-line no-case-declarations
+            console.log(chalk.green(`Build ${name} completed in ${duration}`));
+        } else if (e.code === 'ERROR') {
             const { id, loc/*, codeFrame*/ } = e.error;
 
             console.log(chalk.red('Error', e.error.message));

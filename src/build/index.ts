@@ -1,12 +1,13 @@
 import { performance } from 'node:perf_hooks';
 
-import chalk from 'chalk'
+import { join } from 'path'
 import ms from 'pretty-ms'
 import { rollup } from 'rollup'
 
 import { lint } from '../lint/linter';
 import { getRollupConfig, OutputOptions } from './config'
 import { importReteConfig } from './config-importer';
+import { messages } from './consts';
 import { buildDev } from './dev'
 import { generateTypes } from './gen-types';
 import { Pkg, ReteOptions } from './types';
@@ -18,29 +19,20 @@ const outputs: OutputOptions[] = [
     { suffix: 'common', format: 'cjs' }
 ];
 
-async function resources(configPath: string): Promise<{ config: ReteOptions, pkg: Pkg }> {
-    const fullPath = `${process.cwd()}/${configPath}`;
-    const packagePath = `${process.cwd()}/package.json`;
-    const config = importReteConfig(fullPath);
-    const pkg = require(packagePath);
+async function buildForDev(config: ReteOptions, pkg: Pkg) {
+    const targetConfig = getRollupConfig(config, outputs, pkg);
 
-    return { config, pkg };
+    return await buildDev(config.name, targetConfig);
 }
 
-export default async (configPath: string, watch?: boolean) => {
+// eslint-disable-next-line max-statements
+async function build(config: ReteOptions, pkg: Pkg) {
     const time = performance.now()
-    const { config, pkg } = await resources(configPath);
 
-    if (watch) {
-        const targetConfig = getRollupConfig(config, outputs, pkg);
-
-        return await buildDev(config, targetConfig);
-    }
-
-    await safeExec(generateTypes, chalk.redBright('Type generating failed'), 1)
-    console.log(chalk.green('Types generated!'))
-    await safeExec(lint, chalk.redBright('Linting failed'), 1)
-    console.log(chalk.green('Linting completed!'))
+    await safeExec(generateTypes, messages.typesFail, 1)
+    console.log(messages.typesSuccess)
+    await safeExec(lint, messages.lintingFail, 1)
+    console.log(messages.lintingSuccess)
 
     const targetConfig = getRollupConfig(config, outputs, pkg);
     const bundle = await rollup(targetConfig);
@@ -51,4 +43,18 @@ export default async (configPath: string, watch?: boolean) => {
         console.log(`The bundle ${output.format} created`)
     }
     console.log('Completed in', ms(performance.now() - time, { secondsDecimalDigits: 1 }))
+}
+
+export default async (configPath: string, watch?: boolean) => {
+    const fullPath = join(process.cwd(), configPath)
+    const config = importReteConfig(fullPath);
+
+    const packagePath = join(process.cwd(), 'package.json')
+    const pkg = require(packagePath);
+
+    if (watch) {
+        await buildForDev(config, pkg)
+    } else {
+        await build(config, pkg)
+    }
 }

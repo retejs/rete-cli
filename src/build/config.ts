@@ -1,6 +1,7 @@
 import { babel } from '@rollup/plugin-babel'
 import { nodeResolve } from '@rollup/plugin-node-resolve'
 import Case from 'case'
+import { join } from 'path'
 import { OutputOptions as RollupOutputOptions, RollupOptions } from 'rollup'
 import { terser } from 'rollup-plugin-terser'
 
@@ -27,7 +28,7 @@ export function getRollupConfig(options: ReteOptions, outputs: OutputOptions[], 
     return {
         input,
         output: outputs.map(({ suffix, format, minify }) => ({
-            file: `build/${Case.kebab(name)}.${suffix}.js`,
+            file: join('build', `${Case.kebab(name)}.${suffix}.js`),
             name,
             format,
             sourcemap: true,
