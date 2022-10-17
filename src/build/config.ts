@@ -23,7 +23,7 @@ export function getRollupConfig(options: ReteOptions, outputs: OutputOptions[], 
         plugins = [],
         globals = {}
     } = options
-    const extensions = ['.js', '.ts']
+    const extensions = ['.js', '.ts', '.jsx', '.tsx']
 
     return {
         input,
