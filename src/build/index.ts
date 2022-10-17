@@ -19,22 +19,22 @@ const outputs: OutputOptions[] = [
     { suffix: 'common', format: 'cjs' }
 ];
 
-async function buildForDev(config: ReteOptions, pkg: Pkg, outputDirectory: string) {
-    const targetConfig = getRollupConfig(config, outputs, pkg, outputDirectory);
+async function buildForDev(config: ReteOptions, pkg: Pkg, outputDirectories: string[]) {
+    const targetConfig = getRollupConfig(config, outputs, pkg, outputDirectories);
 
-    return await buildDev(config.name, targetConfig, outputDirectory);
+    return await buildDev(config.name, targetConfig, outputDirectories);
 }
 
 // eslint-disable-next-line max-statements
-async function build(config: ReteOptions, pkg: Pkg, outputDirectory: string) {
+async function build(config: ReteOptions, pkg: Pkg, outputDirectories: string[]) {
     const time = performance.now()
 
-    await safeExec(() => generateTypes(outputDirectory), messages.typesFail, 1)
+    await safeExec(() => generateTypes(outputDirectories), messages.typesFail, 1)
     console.log(messages.typesSuccess)
     await safeExec(lint, messages.lintingFail, 1)
     console.log(messages.lintingSuccess)
 
-    const targetConfig = getRollupConfig(config, outputs, pkg, outputDirectory);
+    const targetConfig = getRollupConfig(config, outputs, pkg, outputDirectories);
     const bundle = await rollup(targetConfig);
 
     for (const output of targetConfig.output) {
@@ -45,13 +45,13 @@ async function build(config: ReteOptions, pkg: Pkg, outputDirectory: string) {
     console.log('Completed in', ms(performance.now() - time, { secondsDecimalDigits: 1 }))
 }
 
-export default async (configPath: string, watch?: boolean, outputDirectory?: string) => {
+export default async (configPath: string, watch?: boolean, outputDirectories?: string[]) => {
     const fullPath = join(process.cwd(), configPath)
     const config = importReteConfig(fullPath);
 
     const packagePath = join(process.cwd(), 'package.json')
     const pkg = require(packagePath);
-    const output = outputDirectory || process.cwd()
+    const output = outputDirectories || [process.cwd()]
 
     if (watch) {
         await buildForDev(config, pkg, output)

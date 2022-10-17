@@ -16,7 +16,7 @@ export interface OutputOptions {
 
 type RollupConfig = RollupOptions & { output: RollupOutputOptions[] }
 
-export function getRollupConfig(options: ReteOptions, outputs: OutputOptions[], pkg: Pkg, outputDirectory: string): RollupConfig {
+export function getRollupConfig(options: ReteOptions, outputs: OutputOptions[], pkg: Pkg, outputDirectories: string[]): RollupConfig {
     const {
         input,
         name,
@@ -27,16 +27,16 @@ export function getRollupConfig(options: ReteOptions, outputs: OutputOptions[], 
 
     return {
         input,
-        output: outputs.map(({ suffix, format, minify }) => ({
-            file: join(outputDirectory, 'build', `${Case.kebab(name)}.${suffix}.js`),
+        output: outputs.map(({ suffix, format, minify }) => outputDirectories.map(output => ({
+            file: join(output, 'build', `${Case.kebab(name)}.${suffix}.js`),
             name,
             format,
             sourcemap: true,
             banner: getBanner(pkg),
             globals,
-            exports: 'named',
+            exports: 'named' as const,
             plugins: minify ? [terser()] : []
-        })),
+        }))).flat(),
         watch: {
             include: 'src/**'
         },

@@ -7,7 +7,7 @@ import { messages } from './consts';
 import { generateTypes } from './gen-types';
 import { safeExec } from './utils';
 
-export async function buildDev(name: string, config: RollupOptions, outputDirectory: string) {
+export async function buildDev(name: string, config: RollupOptions, outputDirectories: string[]) {
     const watcher = watch(config);
 
     // eslint-disable-next-line max-statements
@@ -16,7 +16,7 @@ export async function buildDev(name: string, config: RollupOptions, outputDirect
             console.log('\n\n\n')
 
             safeExec(lint, messages.lintingFail)
-            safeExec(() => generateTypes(outputDirectory), messages.typesFail)
+            safeExec(() => generateTypes(outputDirectories), messages.typesFail)
         } else if (e.code === 'BUNDLE_START') {
             console.log(chalk.green(`Start building ${name} ...`));
         } else if (e.code === 'BUNDLE_END') {

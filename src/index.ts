@@ -18,7 +18,7 @@ program
     .option('-w --watch')
     .option('-o --output <path>')
     .action((options: { config: string, watch?: boolean, output?: string }) => {
-        build(options.config, options.watch, options.output)
+        build(options.config, options.watch, options.output?.split(','))
     })
 
 program
