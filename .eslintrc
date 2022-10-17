@@ -53,7 +53,7 @@
     "no-shadow": 2,
     "no-undef": 1,
     "no-undefined": 2,
-    "no-unused-vars": 2,
+    "@typescript-eslint/no-unused-vars": 2,
     "no-use-before-define": 1,
     "object-curly-spacing": [2, "always"],
     "camelcase": [1, {
