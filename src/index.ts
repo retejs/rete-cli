@@ -3,6 +3,7 @@
 import { createCommand } from 'commander'
 
 import build from './build'
+import bulkBuild from './bulk-build'
 import lint from './lint'
 import plugin from './plugin'
 import test from './test'
@@ -13,12 +14,23 @@ program.version(require('../package.json').version)
 
 program
     .command('build')
-    .description('Build package using Rollup and Babel')
+    .description('Build package using Rollup and TypeScript')
     .requiredOption('-c --config <config>')
     .option('-w --watch')
     .option('-o --output <path>')
     .action((options: { config: string, watch?: boolean, output?: string }) => {
         build(options.config, options.watch, options.output?.split(','))
+    })
+
+program
+    .command('bulk-build')
+    .description(`
+        Build several packages by inserting them into node_modules of each other
+        (for development purposes)
+    `)
+    .option('-f --folders <folders>')
+    .action((options: { folders?: string }) => {
+        bulkBuild(options.folders)
     })
 
 program
