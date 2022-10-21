@@ -21,7 +21,8 @@ export function getRollupConfig(options: ReteOptions, outputs: OutputOptions[], 
         input,
         name,
         plugins = [],
-        globals = {}
+        globals = {},
+        babel: babelOptions
     } = options
     const extensions = ['.js', '.ts', '.jsx', '.tsx']
 
@@ -49,7 +50,8 @@ export function getRollupConfig(options: ReteOptions, outputs: OutputOptions[], 
                 exclude: 'node_modules/**',
                 babelrc: false,
                 presets: [
-                    require('@babel/preset-typescript')
+                    require('@babel/preset-typescript'),
+                    ...(babelOptions?.presets || [])
                 ],
                 babelHelpers: 'bundled',
                 extensions

@@ -4,6 +4,9 @@ export interface ReteOptions {
   input: InputOption;
   name: string;
   plugins?: RollupOptions['plugins'];
+  babel?: {
+    presets?: any[]
+  }
   globals?: OutputOptions['globals'];
 }
 export type Pkg = { name: string, version: string, author: string, license: string }
