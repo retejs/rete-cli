@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { createCommand } from 'commander'
+import { createCommand, Option } from 'commander'
 
 import build from './build'
 import bulkBuild from './bulk-build'
@@ -29,8 +29,9 @@ program
         (for development purposes)
     `)
     .option('-f --folders <folders>')
-    .action((options: { folders?: string }) => {
-        bulkBuild(options.folders)
+    .addOption(new Option('-a --approach <approach>').choices(['print', 'inplace']))
+    .action((options: { folders?: string, approach?: string }) => {
+        bulkBuild(options.folders, options.approach)
     })
 
 program

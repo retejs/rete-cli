@@ -20,7 +20,7 @@ function loadPackageConfig(currentDirectory: string, folder: string) {
 }
 
 // eslint-disable-next-line max-statements
-export default async function (foldersOptions?: string) {
+export default async function (foldersOptions?: string, approach?: string) {
     const currentDirectory = process.cwd()
     const packages = foldersOptions?.split(',') || await choosePackages(currentDirectory)
     const folders = packages.map(name => ({
@@ -59,7 +59,11 @@ export default async function (foldersOptions?: string) {
         } : null
     }).filter((command): command is Exclude<typeof command, null> => command !== null)
 
-    if (await chooseApproach() === Approach.Print) {
+    const choosedApproach = !approach
+        ? await chooseApproach()
+        : (approach === 'print' ? Approach.Print : Approach.InPlace)
+
+    if (choosedApproach === Approach.Print) {
         console.log(chalk.green('Insert the following commands in the terminals:'))
         commands.forEach(({ command }) => console.log(chalk.grey(command)))
     } else {
