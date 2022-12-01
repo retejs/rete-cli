@@ -1,10 +1,15 @@
-import { NodeEditor } from 'rete'
+import { BaseSchemes, NodeEditor, Root, Scope } from 'rete'
 
-function install(editor: NodeEditor, params: Record<string, any>) {
-    console.log('Rete.js plugin boilerplate', { editor, params })
-}
+export class {{namespace}}<Schemes extends BaseSchemes> extends Scope<never, [Root<Schemes>]> {
+    constructor() {
+        super('{{id}}')
+    }
 
-export default {
-    name: '{{id}}',
-    install
+    setParent(scope: Scope<Root<Schemes>>): void {
+        super.setParent(scope)
+
+        const editor = this.parentScope<NodeEditor<Schemes>>(NodeEditor)
+
+        console.log('Rete.js plugin boilerplate installed', { editor })
+    }
 }
