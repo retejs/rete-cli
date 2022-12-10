@@ -15,7 +15,7 @@ export async function buildDev(name: string, config: RollupOptions, outputDirect
         if (e.code === 'START') {
             console.log('\n\n\n')
 
-            safeExec(lint, messages.lintingFail)
+            safeExec(() => lint(false, true), messages.lintingFail)
             safeExec(() => generateTypes(outputDirectories), messages.typesFail)
         } else if (e.code === 'BUNDLE_START') {
             console.log(chalk.green(`Start building ${name} ...`));
