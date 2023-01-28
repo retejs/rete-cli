@@ -14,7 +14,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {},
+  "peerDependencies": {
+    "rete": "^2.0.0"
+  },
   "devDependencies": {
+    "rete": "^2.0.0",
     "rete-cli": "{{cliVersion}}",
     "typescript": "4.8.4"
   }
