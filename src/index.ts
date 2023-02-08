@@ -3,6 +3,7 @@
 import { createCommand, Option } from 'commander'
 
 import build from './build'
+import { setVerbose } from './build/utils'
 import bulkBuild from './bulk-build'
 import lint from './lint'
 import plugin from './plugin'
@@ -18,7 +19,9 @@ program
     .requiredOption('-c --config <config>')
     .option('-w --watch')
     .option('-o --output <path>')
-    .action((options: { config: string, watch?: boolean, output?: string }) => {
+    .option('-v --verbose')
+    .action((options: { config: string, watch?: boolean, output?: string, verbose?: boolean }) => {
+        if (options.verbose) setVerbose(true)
         build(options.config, options.watch, options.output?.split(','))
     })
 
