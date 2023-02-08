@@ -6,7 +6,7 @@ import { OutputOptions as RollupOutputOptions, RollupOptions } from 'rollup'
 import { terser } from 'rollup-plugin-terser'
 
 import { getBanner } from './banner'
-import { Pkg, ReteOptions } from './types'
+import { Pkg, ReteConfig, ReteOptions } from './types'
 
 export interface OutputOptions {
     suffix: string;
@@ -16,10 +16,19 @@ export interface OutputOptions {
 
 type RollupConfig = RollupOptions & { output: RollupOutputOptions[] }
 
-export function getRollupConfig(options: ReteOptions, outputs: OutputOptions[], pkg: Pkg, outputDirectories: string[]): RollupConfig {
+export function getRollupConfig(options: ReteOptions, outputs: OutputOptions[], pkg: Pkg, outputDirectories: string[]): RollupConfig;
+export function getRollupConfig(options: ReteOptions[], outputs: OutputOptions[], pkg: Pkg, outputDirectories: string[]): RollupConfig[];
+export function getRollupConfig(options: ReteConfig, outputs: OutputOptions[], pkg: Pkg, outputDirectories: string[]): RollupConfig | RollupConfig[];
+export function getRollupConfig(options: ReteConfig, outputs: OutputOptions[], pkg: Pkg, outputDirectories: string[]): RollupConfig | RollupConfig[] {
+    if (Array.isArray(options)) {
+        const list = options.map(item => getRollupConfig(item, outputs, pkg, outputDirectories))
+
+        return list
+    }
     const {
         input,
         name,
+        output: outputPath = 'build',
         plugins = [],
         globals = {},
         babel: babelOptions
@@ -29,7 +38,7 @@ export function getRollupConfig(options: ReteOptions, outputs: OutputOptions[], 
     return {
         input,
         output: outputs.map(({ suffix, format, minify }) => outputDirectories.map(output => ({
-            file: join(output, 'build', `${Case.kebab(name)}.${suffix}.js`),
+            file: join(output, outputPath, `${Case.kebab(name)}.${suffix}.js`),
             name,
             format,
             sourcemap: true,

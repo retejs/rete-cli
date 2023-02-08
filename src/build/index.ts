@@ -10,7 +10,7 @@ import { importReteConfig } from './config-importer';
 import { messages } from './consts';
 import { buildDev } from './dev'
 import { generateTypes } from './gen-types';
-import { Pkg, ReteOptions } from './types';
+import { Pkg, ReteConfig } from './types';
 import { safeExec } from './utils';
 
 const outputs: OutputOptions[] = [
@@ -19,14 +19,15 @@ const outputs: OutputOptions[] = [
     { suffix: 'common', format: 'cjs' }
 ];
 
-async function buildForDev(config: ReteOptions, pkg: Pkg, outputDirectories: string[]) {
+async function buildForDev(config: ReteConfig, pkg: Pkg, outputDirectories: string[]) {
     const targetConfig = getRollupConfig(config, outputs, pkg, outputDirectories);
+    const name = Array.from(new Set(Array.isArray(config) ? config.map(c => c.name) : [config.name])).join(', ')
 
-    return await buildDev(config.name, targetConfig, outputDirectories);
+    return await buildDev(name, targetConfig, outputDirectories);
 }
 
 // eslint-disable-next-line max-statements
-async function build(config: ReteOptions, pkg: Pkg, outputDirectories: string[]) {
+async function build(config: ReteConfig, pkg: Pkg, outputDirectories: string[]) {
     const time = performance.now()
 
     await safeExec(() => generateTypes(outputDirectories), messages.typesFail, 1)
@@ -34,13 +35,17 @@ async function build(config: ReteOptions, pkg: Pkg, outputDirectories: string[])
     await safeExec(lint, messages.lintingFail, 1)
     console.log(messages.lintingSuccess)
 
-    const targetConfig = getRollupConfig(config, outputs, pkg, outputDirectories);
-    const bundle = await rollup(targetConfig);
+    const targetConfig = getRollupConfig(config, outputs, pkg, outputDirectories)
+    const targets = Array.isArray(targetConfig) ? targetConfig : []
 
-    for (const output of targetConfig.output) {
-        await bundle.generate(output);
-        await bundle.write(output);
-        console.log(`The bundle ${output.format} created`)
+    for (const target of targets) {
+        const bundle = await rollup(target);
+
+        for (const output of target.output) {
+            await bundle.generate(output);
+            await bundle.write(output);
+            console.log(`The bundle ${output.format} created`)
+        }
     }
     console.log('Completed in', ms(performance.now() - time, { secondsDecimalDigits: 1 }))
 }
