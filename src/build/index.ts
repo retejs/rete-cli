@@ -36,7 +36,7 @@ async function build(config: ReteConfig, pkg: Pkg, outputDirectories: string[]) 
     console.log(messages.lintingSuccess)
 
     const targetConfig = getRollupConfig(config, outputs, pkg, outputDirectories)
-    const targets = Array.isArray(targetConfig) ? targetConfig : []
+    const targets = Array.isArray(targetConfig) ? targetConfig : [targetConfig]
 
     for (const target of targets) {
         const bundle = await rollup(target);
