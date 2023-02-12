@@ -7,6 +7,7 @@ import copy from 'rollup-plugin-copy'
 import { terser } from 'rollup-plugin-terser'
 
 import { getBanner } from './banner'
+import { typesEntry } from './gen-types'
 import { preparePackageJson } from './package-json'
 import { Pkg, ReteConfig, ReteOptions } from './types'
 
@@ -73,8 +74,8 @@ export function getRollupConfig(options: ReteConfig, outputs: OutputOptions[], p
                         config[entry] = getBundleName(suffix)
                     }
                 }
-                config.types = 'types/index.d.ts'
-                config.typings = 'types/index.d.ts'
+                config.types = typesEntry
+                config.typings = typesEntry
             }),
             nodeResolve({
                 extensions
