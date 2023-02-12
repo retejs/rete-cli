@@ -7,6 +7,7 @@ export interface ReteOptions {
   plugins?: RollupOptions['plugins'];
   babel?: {
     presets?: any[]
+    plugins?: []
   }
   globals?: OutputOptions['globals'];
 }

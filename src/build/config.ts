@@ -33,12 +33,18 @@ export function getRollupConfig(options: ReteConfig, outputs: OutputOptions[], p
         globals = {},
         babel: babelOptions
     } = options
+    const outputDistDirectories = outputDirectories.map(path => join(path, outputPath))
     const extensions = ['.js', '.ts', '.jsx', '.tsx']
+    const babelPresets = babelOptions?.presets || [
+        [require('@babel/preset-env'), { targets: '> 0.5%' }],
+        require('@babel/preset-typescript')
+    ]
+    const getBundleName = (suffix: string) => `${Case.kebab(name)}.${suffix}.js`
 
     return {
         input,
-        output: outputs.map(({ suffix, format, minify }) => outputDirectories.map(output => ({
-            file: join(output, outputPath, `${Case.kebab(name)}.${suffix}.js`),
+        output: outputs.map(({ suffix, format, minify }) => outputDistDirectories.map(output => ({
+            file: join(output, getBundleName(suffix)),
             name,
             format,
             sourcemap: true,
@@ -58,10 +64,8 @@ export function getRollupConfig(options: ReteConfig, outputs: OutputOptions[], p
             babel({
                 exclude: 'node_modules/**',
                 babelrc: false,
-                presets: [
-                    require('@babel/preset-typescript'),
-                    ...(babelOptions?.presets || [])
-                ],
+                presets: babelPresets,
+                plugins: babelOptions?.plugins,
                 babelHelpers: 'bundled',
                 extensions
             }),
