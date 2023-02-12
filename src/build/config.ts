@@ -7,11 +7,14 @@ import copy from 'rollup-plugin-copy'
 import { terser } from 'rollup-plugin-terser'
 
 import { getBanner } from './banner'
+import { preparePackageJson } from './package-json'
 import { Pkg, ReteConfig, ReteOptions } from './types'
 
+export type Entry = 'main' | 'module' | 'jsdelivr' | 'unpkg'
 export interface OutputOptions {
-    suffix: string;
-    format: RollupOutputOptions['format'];
+    suffix: string
+    format: RollupOutputOptions['format']
+    entries: Entry[]
     minify?: boolean
 }
 
@@ -61,9 +64,17 @@ export function getRollupConfig(options: ReteConfig, outputs: OutputOptions[], p
         plugins: [
             copy({
                 targets: [
-                    { src: 'README.md', dest: outputDistDirectories },
-                    { src: 'package.json', dest: outputDistDirectories }
+                    { src: 'README.md', dest: outputDistDirectories }
                 ]
+            }),
+            preparePackageJson('.', outputDistDirectories, config => {
+                for (const { suffix, entries } of outputs) {
+                    for (const entry of entries) {
+                        config[entry] = getBundleName(suffix)
+                    }
+                }
+                config.types = 'types/index.d.ts'
+                config.typings = 'types/index.d.ts'
             }),
             nodeResolve({
                 extensions

@@ -14,9 +14,9 @@ import { Pkg, ReteConfig } from './types';
 import { safeExec } from './utils';
 
 const outputs: OutputOptions[] = [
-    { suffix: 'min', format: 'umd', minify: true },
-    { suffix: 'esm', format: 'es' },
-    { suffix: 'common', format: 'cjs' }
+    { suffix: 'esm', format: 'es', entries: ['module'] },
+    { suffix: 'common', format: 'cjs', entries: ['main'] },
+    { suffix: 'min', format: 'umd', entries: ['jsdelivr', 'unpkg'], minify: true }
 ];
 
 async function buildForDev(config: ReteConfig, pkg: Pkg, outputDirectories: string[]) {
