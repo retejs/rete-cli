@@ -56,7 +56,7 @@ export default async (configPath: string, watch?: boolean, outputDirectories?: s
 
     const packagePath = join(process.cwd(), 'package.json')
     const pkg = require(packagePath);
-    const output = outputDirectories || [process.cwd()]
+    const output = outputDirectories || [join(process.cwd(), 'dist')]
 
     if (watch) {
         await buildForDev(config, pkg, output)

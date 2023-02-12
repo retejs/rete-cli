@@ -3,6 +3,7 @@ import { nodeResolve } from '@rollup/plugin-node-resolve'
 import Case from 'case'
 import { join } from 'path'
 import { OutputOptions as RollupOutputOptions, RollupOptions } from 'rollup'
+import copy from 'rollup-plugin-copy'
 import { terser } from 'rollup-plugin-terser'
 
 import { getBanner } from './banner'
@@ -28,7 +29,7 @@ export function getRollupConfig(options: ReteConfig, outputs: OutputOptions[], p
     const {
         input,
         name,
-        output: outputPath = 'build',
+        output: outputPath = '.',
         plugins = [],
         globals = {},
         babel: babelOptions
@@ -58,6 +59,12 @@ export function getRollupConfig(options: ReteConfig, outputs: OutputOptions[], p
         },
         external: Object.keys(globals),
         plugins: [
+            copy({
+                targets: [
+                    { src: 'README.md', dest: outputDistDirectories },
+                    { src: 'package.json', dest: outputDistDirectories }
+                ]
+            }),
             nodeResolve({
                 extensions
             }),
