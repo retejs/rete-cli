@@ -8,7 +8,7 @@ import { terser } from 'rollup-plugin-terser'
 
 import { SOURCE_FOLDER } from '../consts'
 import { getBanner } from './banner'
-import { typesEntry } from './gen-types'
+import { getDTSPath } from './gen-types'
 import { preparePackageJson } from './package-json'
 import { Pkg, ReteConfig, ReteOptions } from './types'
 
@@ -20,7 +20,7 @@ export interface OutputOptions {
     minify?: boolean
 }
 
-type RollupConfig = RollupOptions & { output: RollupOutputOptions[] }
+export type RollupConfig = RollupOptions & { output: RollupOutputOptions[] }
 
 export function getRollupConfig(options: ReteOptions, outputs: OutputOptions[], pkg: Pkg, outputDirectories: string[]): RollupConfig;
 export function getRollupConfig(options: ReteOptions[], outputs: OutputOptions[], pkg: Pkg, outputDirectories: string[]): RollupConfig[];
@@ -39,7 +39,7 @@ export function getRollupConfig(options: ReteConfig, outputs: OutputOptions[], p
         globals = {},
         babel: babelOptions
     } = options
-    const outputDistDirectories = outputDirectories.map(path => join(path, outputPath))
+    const localOutputDirectories = outputDirectories.map(path => join(path, outputPath))
     const extensions = ['.js', '.ts', '.jsx', '.tsx']
     const babelPresets = babelOptions?.presets || [
         [require('@babel/preset-env'), { targets: '> 0.5%' }],
@@ -51,7 +51,7 @@ export function getRollupConfig(options: ReteConfig, outputs: OutputOptions[], p
 
     return {
         input,
-        output: outputs.map(({ suffix, format, minify }) => outputDistDirectories.map(output => ({
+        output: outputs.map(({ suffix, format, minify }) => localOutputDirectories.map(output => ({
             file: join(output, getBundleName(suffix)),
             name,
             format,
@@ -68,17 +68,22 @@ export function getRollupConfig(options: ReteConfig, outputs: OutputOptions[], p
         plugins: [
             copy({
                 targets: [
-                    { src: 'README.md', dest: outputDistDirectories }
+                    { src: 'README.md', dest: localOutputDirectories }
                 ]
             }),
-            preparePackageJson('.', outputDistDirectories, config => {
-                for (const { suffix, entries } of outputs) {
-                    for (const entry of entries) {
-                        config[entry] = getBundleName(suffix)
+            ...outputDirectories.map(output => {
+                const bundlesPath = join(output, outputPath)
+
+                return preparePackageJson(pkg, bundlesPath, (config) => {
+                    for (const { suffix, entries } of outputs) {
+                        for (const entry of entries) {
+                            config[entry] = getBundleName(suffix)
+                        }
                     }
-                }
-                config.types = typesEntry
-                config.typings = typesEntry
+
+                    config.types = getDTSPath(input, output, bundlesPath)
+                    config.typings = config.types
+                })
             }),
             nodeResolve({
                 extensions

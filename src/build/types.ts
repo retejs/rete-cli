@@ -1,7 +1,7 @@
-import { InputOption, OutputOptions, RollupOptions } from 'rollup';
+import { OutputOptions, RollupOptions } from 'rollup';
 
 export interface ReteOptions {
-  input: InputOption;
+  input: string;
   name: string;
   output?: string,
   plugins?: RollupOptions['plugins'];
