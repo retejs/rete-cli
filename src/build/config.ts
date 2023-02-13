@@ -6,6 +6,7 @@ import { OutputOptions as RollupOutputOptions, RollupOptions } from 'rollup'
 import copy from 'rollup-plugin-copy'
 import { terser } from 'rollup-plugin-terser'
 
+import { SOURCE_FOLDER } from '../consts'
 import { getBanner } from './banner'
 import { typesEntry } from './gen-types'
 import { preparePackageJson } from './package-json'
@@ -46,6 +47,8 @@ export function getRollupConfig(options: ReteConfig, outputs: OutputOptions[], p
     ]
     const getBundleName = (suffix: string) => `${Case.kebab(name)}.${suffix}.js`
 
+    if (!join(input).startsWith(SOURCE_FOLDER)) throw new Error(`extected src based input, received ${input}`)
+
     return {
         input,
         output: outputs.map(({ suffix, format, minify }) => outputDistDirectories.map(output => ({
@@ -59,7 +62,7 @@ export function getRollupConfig(options: ReteConfig, outputs: OutputOptions[], p
             plugins: minify ? [terser()] : []
         }))).flat(),
         watch: {
-            include: 'src/**'
+            include: `${SOURCE_FOLDER}/**`
         },
         external: Object.keys(globals),
         plugins: [
