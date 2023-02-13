@@ -5,12 +5,12 @@ import ms from 'pretty-ms'
 import { rollup } from 'rollup'
 
 import { lint } from '../lint/linter';
-import { getRollupConfig, OutputOptions } from './config'
+import { getRollupConfig, OutputOptions, RollupConfig } from './config'
 import { importReteConfig } from './config-importer';
 import { messages } from './consts';
 import { buildDev } from './dev'
 import { generateTypes } from './gen-types';
-import { Pkg, ReteConfig } from './types';
+import { Pkg, ReteConfig, ReteOptions } from './types';
 import { safeExec } from './utils';
 
 const outputs: OutputOptions[] = [
@@ -35,16 +35,20 @@ async function build(config: ReteConfig, pkg: Pkg, outputDirectories: string[]) 
     await safeExec(lint, messages.lintingFail, 1)
     console.log(messages.lintingSuccess)
 
-    const targetConfig = getRollupConfig(config, outputs, pkg, outputDirectories)
-    const targets = Array.isArray(targetConfig) ? targetConfig : [targetConfig]
+    const rollupConfig = getRollupConfig(config, outputs, pkg, outputDirectories)
+    const targets = Array.isArray(rollupConfig) && Array.isArray(config)
+        ? rollupConfig.map((item, i) => ({ rollupConfig: item, reteConfig: config[i] }))
+        : [{ rollupConfig, reteConfig: config } as { rollupConfig: RollupConfig, reteConfig: ReteOptions }]
 
     for (const target of targets) {
-        const bundle = await rollup(target);
+        const bundle = await rollup(target.rollupConfig)
+        const distDirectory = target.reteConfig.output || ''
 
-        for (const output of target.output) {
+        for (const output of target.rollupConfig.output) {
             await bundle.generate(output);
             await bundle.write(output);
-            console.log(`The bundle ${output.format} created`)
+
+            console.log(`The bundle ${output.format} created in ./${distDirectory}`)
         }
     }
     console.log('Completed in', ms(performance.now() - time, { secondsDecimalDigits: 1 }))
