@@ -1,1 +1,1 @@
-export type { ReteOptions, ReteConfig } from './build/types'
+export type { ReteConfig, ReteOptions } from './build/types'

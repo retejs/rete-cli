@@ -11,7 +11,7 @@ async function createDir(folder: string) {
     const boilerplateFolder = join(__dirname, '..', '..', 'assets', 'plugin-boilerplate')
 
     await fs.promises.access(boilerplateFolder)
-    await fs.promises.mkdir(folder);
+    await fs.promises.mkdir(folder)
     await copyDir(boilerplateFolder, folder, { dot: true })
 }
 
@@ -25,7 +25,7 @@ export default async function (name: string) {
     const id = Case.kebab(lowerCaseName)
     const cliVersion = version
 
-    await createDir(folderName);
+    await createDir(folderName)
     await renderTemplates(folderName, {
         pluginName,
         packageName,
@@ -34,6 +34,6 @@ export default async function (name: string) {
         folderName,
         cliVersion,
         id
-    });
+    })
 }
 

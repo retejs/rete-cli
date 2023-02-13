@@ -21,8 +21,8 @@ export async function choosePackages(currentDirectory: string): Promise<string[]
 }
 
 export enum Approach {
-  Print = 'print',
-  InPlace = 'in-place'
+  PRINT = 'print',
+  IN_PLACE = 'in-place'
 }
 
 export async function chooseApproach(): Promise<Approach> {
@@ -32,8 +32,8 @@ export async function chooseApproach(): Promise<Approach> {
             message: 'Select output type',
             name: 'approach',
             choices: [
-                { name: 'print (run commands manually)', value: Approach.Print },
-                { name: 'in place (run commands in current terminal)', value: Approach.InPlace }
+                { name: 'print (run commands manually)', value: Approach.PRINT },
+                { name: 'in place (run commands in current terminal)', value: Approach.IN_PLACE }
             ]
         }
     ])

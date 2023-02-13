@@ -61,9 +61,9 @@ export default async function (foldersOptions?: string, approach?: string) {
 
     const choosedApproach = !approach
         ? await chooseApproach()
-        : (approach === 'print' ? Approach.Print : Approach.InPlace)
+        : (approach === 'print' ? Approach.PRINT : Approach.IN_PLACE)
 
-    if (choosedApproach === Approach.Print) {
+    if (choosedApproach === Approach.PRINT) {
         console.log(chalk.green('Insert the following commands in the terminals:'))
         commands.forEach(({ command }) => console.log(chalk.grey(command)))
     } else {

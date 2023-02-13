@@ -1,6 +1,6 @@
-import { lint } from './linter';
+import { lint } from './linter'
 
-export default async function(fix?: boolean, quiet?: boolean) {
+export default async function (fix?: boolean, quiet?: boolean) {
     try {
         await lint(fix, quiet)
     } catch (e) {

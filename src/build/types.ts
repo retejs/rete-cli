@@ -1,15 +1,15 @@
-import { OutputOptions, RollupOptions } from 'rollup';
+import { OutputOptions, RollupOptions } from 'rollup'
 
 export interface ReteOptions {
-  input: string;
-  name: string;
-  output?: string,
-  plugins?: RollupOptions['plugins'];
+  input: string
+  name: string
+  output?: string
+  plugins?: RollupOptions['plugins']
   babel?: {
-    presets?: any[]
-    plugins?: []
+    presets?: any[];
+    plugins?: any[];
   }
-  globals?: OutputOptions['globals'];
+  globals?: OutputOptions['globals']
 }
 export type Pkg = { name: string, version: string, author: string, license: string }
 export type ReteConfig = ReteOptions | ReteOptions[]
