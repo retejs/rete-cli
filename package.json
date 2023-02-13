@@ -10,7 +10,8 @@
   },
   "scripts": {
     "build": "tsc",
-    "dev": "tsc --watch"
+    "dev": "tsc --watch",
+    "lint": "eslint src"
   },
   "author": "Vitaliy Stoliarov",
   "license": "MIT",

@@ -2,5 +2,10 @@
   "extends": "../.eslintrc",
   "env": {
     "node": true
+  },
+  "rules": {
+    "global-require": "off",
+    "@typescript-eslint/no-var-requires": "off",
+    "no-console": "off"
   }
 }
