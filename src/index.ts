@@ -35,8 +35,9 @@ program
   .command('test')
   .description('Run tests')
   .description('Run tests using Jest')
-  .action(() => {
-    test()
+  .option('-w --watch')
+  .action((options:{ watch?: boolean }) => {
+    test(options.watch)
   })
 
 program.parse(process.argv)
