@@ -39,7 +39,7 @@ export async function buildDev(name: string, config: RollupOptions | RollupOptio
 
             console.log(chalk.green(`Build ${name}${index >= 0 ? `[${index}]` : ''} completed in ${duration}`))
         } else if (e.code === 'ERROR') {
-            const { id, loc/*, codeFrame*/ } = e.error
+            const { id, loc /* , codeFrame*/ } = e.error
 
             console.log(chalk.red('Error', e.error.message))
             if (loc) console.log(chalk.green(id+':'+loc.line))

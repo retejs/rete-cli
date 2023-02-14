@@ -1,12 +1,10 @@
 #!/usr/bin/env node
 
-import { createCommand, Option } from 'commander'
+import { createCommand } from 'commander'
 
 import build from './build'
 import { setVerbose } from './build/utils'
-import bulkBuild from './bulk-build'
 import lint from './lint'
-import plugin from './plugin'
 import test from './test'
 
 const program = createCommand()
@@ -26,31 +24,11 @@ program
     })
 
 program
-    .command('bulk-build')
-    .description(`
-        Build several packages by inserting them into node_modules of each other
-        (for development purposes)
-    `)
-    .option('-f --folders <folders>')
-    .addOption(new Option('-a --approach <approach>').choices(['print', 'inplace']))
-    .action((options: { folders?: string, approach?: string }) => {
-        bulkBuild(options.folders, options.approach)
-    })
-
-program
     .command('lint')
     .description('Lint using ESLint and TS parser')
     .option('--fix')
     .action((options: { fix?: boolean }) => {
         lint(options.fix)
-    })
-
-program
-    .command('plugin')
-    .description('Create plugin boilerplate')
-    .requiredOption('-n --name <name>')
-    .action((options: { name: string }) => {
-        plugin(options.name)
     })
 
 program
