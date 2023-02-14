@@ -109,7 +109,6 @@
       }
     ],
     "padded-blocks": ["error", "never"],
-    "spaced-comment": ["error", "always"],
-    "@typescript-eslint/explicit-member-accessibility": "error"
+    "spaced-comment": ["error", "always"]
   }
 }
