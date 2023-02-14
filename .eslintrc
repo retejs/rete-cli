@@ -93,7 +93,13 @@
       },
       {
         "selector": "variable",
-        "format": ["camelCase", "UPPER_CASE"]
+        "format": ["camelCase", "UPPER_CASE"],
+        "leadingUnderscore": "allow"
+      },
+      {
+        "selector": "function",
+        "format": ["camelCase"],
+        "leadingUnderscore": "allow"
       },
       {
         "selector": "typeLike",
