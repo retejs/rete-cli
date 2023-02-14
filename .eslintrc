@@ -62,7 +62,7 @@
       "before": false,
       "after": true
     }],
-    "indent": ["error", 4],
+    "indent": ["error", 2],
     "newline-after-var": ["error", "always"],
     "no-mixed-spaces-and-tabs": "error",
     "no-multiple-empty-lines": ["warn", { "max": 1 }],
@@ -109,6 +109,7 @@
       }
     ],
     "padded-blocks": ["error", "never"],
-    "spaced-comment": ["error", "always"]
+    "spaced-comment": ["error", "always"],
+    "@typescript-eslint/explicit-member-accessibility": "error"
   }
 }
