@@ -25,8 +25,6 @@ export async function buildDev(name: string, config: RollupOptions | RollupOptio
   // eslint-disable-next-line max-statements
   watcher.on('event', async e => {
     if (e.code === 'START') {
-      console.log('\n\n\n')
-
       safeExec(() => lint(false, true), messages.lintingFail)
       safeExec(() => generateTypes(outputDirectories), messages.typesFail)
     } else if (e.code === 'BUNDLE_START') {
