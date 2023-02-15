@@ -15,15 +15,18 @@ export function getDTSPath(srcScript: string, distPath: string, packageDirectory
 }
 
 export async function generateTypes(outputDirectories: string[]) {
-  for (const outputDirectory of outputDirectories) {
+  for (let i = 0; i < outputDirectories.length; i++) {
+    const outputDirectory = outputDirectories[i]
+
     await execa('tsc', [
       '-d',
+      '--pretty',
       '--target', 'es5',
       '--outDir', join(outputDirectory, typesDirectoryName),
       '--skipLibCheck',
       '--declarationMap',
       '--downlevelIteration',
       '--emitDeclarationOnly'
-    ], { stdio: 'inherit' })
+    ], { stdio: i === 0 ? 'inherit' : 'ignore' })
   }
 }
