@@ -8,7 +8,7 @@ export const typesDirectoryName = '_types'
 export function getDTSPath(srcScript: string, distPath: string, packageDirectory: string) {
   const currentTypesDirectory = join(distPath, typesDirectoryName)
   const relInput = relative(SOURCE_FOLDER, join(srcScript))
-  const inputTsD = join(currentTypesDirectory, relInput).replace('.ts', '.d.ts')
+  const inputTsD = join(currentTypesDirectory, relInput).replace(/\.tsx?/, '.d.ts')
   const typesPath = relative(packageDirectory, inputTsD)
 
   return typesPath
