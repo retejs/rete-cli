@@ -7,7 +7,7 @@ export default async function (watch?: boolean) {
       '--coverage',
       '--testEnvironment', 'node',
       '--testMatch', '**/*.test.ts',
-      watch ? '--watch' : ''
+      ...(watch ? ['--watch'] : [])
     ], { stdio: 'inherit' })
   } catch (e) {
     process.exit(1)
