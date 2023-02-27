@@ -11,5 +11,5 @@ export interface ReteOptions {
   }
   globals?: OutputOptions['globals']
 }
-export type Pkg = { name: string, version: string, author: string, license: string }
+export type Pkg = { name: string, version: string, author: string, license: string, scripts?: Record<string, string> }
 export type ReteConfig = ReteOptions | ReteOptions[]

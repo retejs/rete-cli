@@ -5,16 +5,22 @@ import { Plugin } from 'rollup'
 
 import { Pkg } from './types'
 
-export function preparePackageJson(pkg: Pkg, target: string, modify: (config: Record<string, string>) => void): Plugin {
+export function preparePackageJson(pkg: Pkg, target: string, modify: (config: Record<string, unknown>) => void): Plugin {
   return {
     name: 'prepare source json',
     async buildEnd() {
       const targetConfigPath = join(target, 'package.json')
 
-      const newConfig: Record<string, string> = { ...pkg }
+      const newConfig: Record<string, unknown> = { ...pkg }
 
       delete newConfig.devDependencies
       delete newConfig.scripts
+
+      if (pkg.scripts?.postinstall) {
+        newConfig.scripts = {
+          postinstall: pkg.scripts.postinstall
+        }
+      }
 
       modify(newConfig)
 
