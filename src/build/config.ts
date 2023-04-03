@@ -42,7 +42,7 @@ export function getRollupConfig(options: ReteConfig, outputs: OutputOptions[], p
   const localOutputDirectories = outputDirectories.map(path => join(path, outputPath))
   const extensions = ['.js', '.ts', '.jsx', '.tsx']
   const babelPresets = babelOptions?.presets || [
-    [require('@babel/preset-env'), { targets: '> 0.5%' }],
+    [require('@babel/preset-env'), { targets: { chrome: 60 } }],
     require('@babel/preset-typescript')
   ]
   const getBundleName = (suffix: string) => `${Case.kebab(name)}.${suffix}.js`
