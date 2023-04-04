@@ -1,4 +1,5 @@
 import { babel } from '@rollup/plugin-babel'
+import commonjs from '@rollup/plugin-commonjs'
 import { nodeResolve } from '@rollup/plugin-node-resolve'
 import Case from 'case'
 import { join } from 'path'
@@ -22,14 +23,14 @@ export interface OutputOptions {
 
 export type RollupConfig = RollupOptions & { output: RollupOutputOptions[] }
 
-export function getRollupConfig(options: ReteOptions, outputs: OutputOptions[], pkg: Pkg, outputDirectories: string[]): RollupConfig
-export function getRollupConfig(options: ReteOptions[], outputs: OutputOptions[], pkg: Pkg, outputDirectories: string[]): RollupConfig[]
-export function getRollupConfig(options: ReteConfig, outputs: OutputOptions[], pkg: Pkg, outputDirectories: string[]): RollupConfig | RollupConfig[]
-export function getRollupConfig(options: ReteConfig, outputs: OutputOptions[], pkg: Pkg, outputDirectories: string[]): RollupConfig | RollupConfig[] {
+export function getRollupConfig(options: ReteConfig, outputs: OutputOptions[], pkg: Pkg, outputDirectories: string[]): ({
+  options: ReteOptions,
+  config: RollupConfig
+}[]) {
   if (Array.isArray(options)) {
     const list = options.map(item => getRollupConfig(item, outputs, pkg, outputDirectories))
 
-    return list
+    return list.flat()
   }
   const {
     input,
@@ -42,16 +43,16 @@ export function getRollupConfig(options: ReteConfig, outputs: OutputOptions[], p
   const localOutputDirectories = outputDirectories.map(path => join(path, outputPath))
   const extensions = ['.js', '.ts', '.jsx', '.tsx']
   const babelPresets = babelOptions?.presets || [
-    [require('@babel/preset-env'), { targets: { chrome: 60 } }],
+    [require('@babel/preset-env')],
     require('@babel/preset-typescript')
   ]
   const getBundleName = (suffix: string) => `${Case.kebab(name)}.${suffix}.js`
 
   if (!join(input).startsWith(SOURCE_FOLDER)) throw new Error(`extected src based input, received ${input}`)
 
-  return {
+  const getConfig = (head: boolean, bundled: boolean, filteredOutputs: OutputOptions[]) => ({
     input,
-    output: outputs.map(({ suffix, format, minify }) => localOutputDirectories.map(output => ({
+    output: filteredOutputs.map(({ suffix, format, minify }) => localOutputDirectories.map(output => ({
       file: join(output, getBundleName(suffix)),
       name,
       format,
@@ -64,27 +65,33 @@ export function getRollupConfig(options: ReteConfig, outputs: OutputOptions[], p
     watch: {
       include: `${SOURCE_FOLDER}/**`
     },
-    external: Object.keys(globals),
+    external: [
+      ...Object.keys(globals),
+      /^@babel\/runtime.*$/
+    ],
     plugins: [
-      copy({
-        targets: [
-          { src: 'README.md', dest: localOutputDirectories }
-        ]
-      }),
-      ...outputDirectories.map(output => {
-        const bundlesPath = join(output, outputPath)
+      commonjs(),
+      ...(head ? [
+        copy({
+          targets: [
+            { src: 'README.md', dest: localOutputDirectories }
+          ]
+        }),
+        ...outputDirectories.map(output => {
+          const bundlesPath = join(output, outputPath)
 
-        return preparePackageJson(pkg, bundlesPath, (config) => {
-          for (const { suffix, entries } of outputs) {
-            for (const entry of entries) {
-              config[entry] = getBundleName(suffix)
+          return preparePackageJson(pkg, bundlesPath, (config) => {
+            for (const { suffix, entries } of outputs) {
+              for (const entry of entries) {
+                config[entry] = getBundleName(suffix)
+              }
             }
-          }
 
-          config.types = getDTSPath(input, output, bundlesPath)
-          config.typings = config.types
+            config.types = getDTSPath(input, output, bundlesPath)
+            config.typings = config.types
+          })
         })
-      }),
+      ] : []),
       nodeResolve({
         extensions
       }),
@@ -92,11 +99,18 @@ export function getRollupConfig(options: ReteConfig, outputs: OutputOptions[], p
         exclude: 'node_modules/**',
         babelrc: false,
         presets: babelPresets,
-        plugins: babelOptions?.plugins,
-        babelHelpers: 'bundled',
+        plugins: bundled ? [] : [
+          require('@babel/plugin-transform-runtime')
+        ],
+        babelHelpers: bundled ? 'bundled' : 'runtime',
         extensions
       }),
       ...plugins
     ]
-  }
+  })
+
+  return [
+    { options, config: getConfig(true, false, outputs.filter(o => o.format !== 'umd')) },
+    { options, config: getConfig(false, true, outputs.filter(o => o.format === 'umd')) }
+  ]
 }
