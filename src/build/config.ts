@@ -1,5 +1,4 @@
 import { babel } from '@rollup/plugin-babel'
-import commonjs from '@rollup/plugin-commonjs'
 import { nodeResolve } from '@rollup/plugin-node-resolve'
 import Case from 'case'
 import { join } from 'path'
@@ -70,7 +69,6 @@ export function getRollupConfig(options: ReteConfig, outputs: OutputOptions[], p
       /^@babel\/runtime.*$/
     ],
     plugins: [
-      commonjs(),
       ...(head ? [
         copy({
           targets: [
@@ -99,8 +97,9 @@ export function getRollupConfig(options: ReteConfig, outputs: OutputOptions[], p
         exclude: 'node_modules/**',
         babelrc: false,
         presets: babelPresets,
-        plugins: bundled ? [] : [
-          require('@babel/plugin-transform-runtime')
+        plugins: bundled ? babelOptions?.plugins : [
+          require('@babel/plugin-transform-runtime'),
+          ...(babelOptions?.plugins ? babelOptions.plugins : [])
         ],
         babelHelpers: bundled ? 'bundled' : 'runtime',
         extensions
