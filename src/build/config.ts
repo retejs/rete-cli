@@ -14,10 +14,10 @@ import { Pkg, ReteConfig, ReteOptions } from './types'
 
 export type Entry = 'main' | 'module' | 'jsdelivr' | 'unpkg'
 export interface OutputOptions {
-    suffix: string
-    format: RollupOutputOptions['format']
-    entries: Entry[]
-    minify?: boolean
+  suffix: string
+  format: RollupOutputOptions['format']
+  entries: Entry[]
+  minify?: boolean
 }
 
 export type RollupConfig = RollupOptions & { output: RollupOutputOptions[] }
@@ -37,6 +37,7 @@ export function getRollupConfig(options: ReteConfig, outputs: OutputOptions[], p
     output: outputPath = '.',
     plugins = [],
     globals = {},
+    nodeResolve: nodeResolveOptions,
     babel: babelOptions
   } = options
   const localOutputDirectories = outputDirectories.map(path => join(path, outputPath))
@@ -90,9 +91,10 @@ export function getRollupConfig(options: ReteConfig, outputs: OutputOptions[], p
           })
         })
       ] : []),
-      nodeResolve({
-        extensions
-      }),
+      ...(nodeResolveOptions === false ? [] : [nodeResolve({
+        extensions,
+        ...(nodeResolveOptions || {})
+      })]),
       babel({
         exclude: 'node_modules/**',
         babelrc: false,
