@@ -4,6 +4,7 @@ import { createCommand } from 'commander'
 
 import build from './build'
 import { setVerbose } from './build/utils'
+import doc from './doc'
 import lint from './lint'
 import test from './test'
 
@@ -32,14 +33,22 @@ program
   })
 
 program
+  .command('doc')
+  .description('Generate API docs')
+  .option('--entries <entries>', 'Comma-separated list of entry points')
+  .action(async (options: { entries?: string }) => {
+    await doc(options.entries ? options.entries.split(',') : void 0)
+  })
+
+program
   .command('test')
   .description('Run tests')
   .description('Run tests using Jest')
   .option('-w --watch')
-  .action((options:{ watch?: boolean }) => {
+  .action((options: { watch?: boolean }) => {
     test(options.watch)
   })
 
 program.parse(process.argv)
 
-export {}
+export { }
