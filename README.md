@@ -21,4 +21,4 @@ Please refer to the [Contribution](https://retejs.org/docs/contribution) guide
 
 ## License
 
-[MIT](https://github.com/retejs/rete-cli/blob/master/LICENSE)
+[MIT](https://github.com/retejs/rete-cli/blob/main/LICENSE)
