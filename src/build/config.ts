@@ -57,11 +57,14 @@ export function getRollupConfig(options: ReteConfig, outputs: OutputOptions[], p
       name,
       format,
       sourcemap: true,
+      sourcemapPathTransform: (relativePath: string) => {
+        return join(SOURCE_FOLDER, relativePath)
+      },
       banner: getBanner(pkg),
       globals,
       exports: 'named' as const,
       plugins: minify ? [terser()] : []
-    }))).flat(),
+    }) as RollupOutputOptions)).flat(),
     watch: {
       include: `${SOURCE_FOLDER}/**`
     },
