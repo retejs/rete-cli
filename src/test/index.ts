@@ -6,6 +6,7 @@ export default async function (watch?: boolean) {
       '--preset', 'ts-jest',
       '--coverage',
       '--testEnvironment', 'node',
+      '--collectCoverageFrom', 'src/**/*',
       '--testMatch', '**/*.test.ts',
       ...(watch ? ['--watch'] : [])
     ], { stdio: 'inherit' })
