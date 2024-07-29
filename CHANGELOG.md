@@ -1,3 +1,10 @@
+## [1.0.4](https://github.com/retejs/rete-cli/compare/v1.0.3...v1.0.4) (2024-07-29)
+
+
+### Bug Fixes
+
+* **build:** type gen target ([39ebe77](https://github.com/retejs/rete-cli/commit/39ebe7727d84ad1c40cc6e0d2446a0830298f34b))
+
 ## [1.0.3](https://github.com/retejs/rete-cli/compare/v1.0.2...v1.0.3) (2024-04-20)
 
 

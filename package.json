@@ -1,6 +1,6 @@
 {
   "name": "rete-cli",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "",
   "main": "bin/module.js",
   "module": "bin/module.js",
