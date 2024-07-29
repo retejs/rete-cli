@@ -2,6 +2,7 @@ import execa from 'execa'
 import { join, relative } from 'path'
 
 import { SOURCE_FOLDER } from '../consts'
+import { readTSConfig } from './utils'
 
 export const typesDirectoryName = '_types'
 
@@ -15,13 +16,16 @@ export function getDTSPath(srcScript: string, distPath: string, packageDirectory
 }
 
 export async function generateTypes(outputDirectories: string[]) {
+  const config = await readTSConfig(process.cwd())
+  const target = config?.compilerOptions?.target || 'es5'
+
   for (let i = 0; i < outputDirectories.length; i++) {
     const outputDirectory = outputDirectories[i]
 
     await execa('tsc', [
       '-d',
       '--pretty',
-      '--target', 'es5',
+      '--target', target,
       '--outDir', join(outputDirectory, typesDirectoryName),
       '--skipLibCheck',
       '--declarationMap',
