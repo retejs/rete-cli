@@ -1,3 +1,10 @@
+## [1.0.5](https://github.com/retejs/rete-cli/compare/v1.0.4...v1.0.5) (2024-08-20)
+
+
+### Bug Fixes
+
+* update ts version ([3b14eee](https://github.com/retejs/rete-cli/commit/3b14eee46e61ff0ba8ab9561d1ecd5fe0793441a))
+
 ## [1.0.4](https://github.com/retejs/rete-cli/compare/v1.0.3...v1.0.4) (2024-07-29)
 
 
