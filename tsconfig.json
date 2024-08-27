@@ -1,4 +1,5 @@
 {
+	"extends": "./tsconfig.coverage.json",
 	"compilerOptions": {
 		"outDir": "bin",
 		"declaration": true,
@@ -7,7 +8,6 @@
 		"module": "CommonJS",
 		"allowJs": true,
 		"strict": true,
-		"isolatedModules": true,
 		"esModuleInterop": true,
 		"noUnusedParameters": true,
 		"noUnusedLocals": true,

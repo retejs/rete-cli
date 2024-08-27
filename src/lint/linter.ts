@@ -4,12 +4,14 @@ import { SOURCE_FOLDER } from '../consts'
 import { ESLint } from './eslint'
 import { Formatter } from './formatter'
 import { makeRelativePath, mergeResults } from './results'
+import { TypeCoverage } from './type-coverage'
 
 export async function lint(fix?: boolean, quiet?: boolean) {
   const src = join(process.cwd(), SOURCE_FOLDER)
 
   const linters = [
-    new ESLint({ src, fix })
+    new ESLint({ src, fix }),
+    new TypeCoverage({ src })
   ]
 
   const allResults = (await Promise.all(linters.map(linter => linter.run())))

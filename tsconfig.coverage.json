@@ -1,0 +1,11 @@
+{
+    "compilerOptions": {
+      "plugins": [
+        {
+          "name": "ts-plugin-type-coverage",
+          "strict": true,
+          "notOnlyInCWD": true
+        }
+      ]
+    }
+  }
