@@ -4,6 +4,7 @@ import { SOURCE_FOLDER } from '../consts'
 import { ESLint } from './eslint'
 import { Formatter } from './formatter'
 import { makeRelativePath, mergeResults } from './results'
+import { TypeCheck } from './type-check'
 import { TypeCoverage } from './type-coverage'
 
 export async function lint(fix?: boolean, quiet?: boolean) {
@@ -11,7 +12,8 @@ export async function lint(fix?: boolean, quiet?: boolean) {
 
   const linters = [
     new ESLint({ src, fix }),
-    new TypeCoverage({ src })
+    new TypeCoverage({ src }),
+    new TypeCheck({ config: 'tsconfig.json' })
   ]
 
   const allResults = (await Promise.all(linters.map(linter => linter.run())))
