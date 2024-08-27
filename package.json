@@ -11,7 +11,8 @@
   "scripts": {
     "build": "tsc",
     "dev": "tsc --watch",
-    "lint": "eslint src"
+    "lint": "eslint src",
+    "test": "jest --preset ts-jest --coverage --testEnvironment node --collectCoverageFrom 'src/**/*' --testMatch '**/*.test.ts'"
   },
   "author": "Vitaliy Stoliarov",
   "license": "MIT",
