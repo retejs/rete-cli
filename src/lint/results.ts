@@ -1,6 +1,6 @@
 import { relative } from 'path'
 
-export type Severity = 0 | 1 | 2
+export type Severity = 1 | 2
 
 export interface LintMessage {
   column: number

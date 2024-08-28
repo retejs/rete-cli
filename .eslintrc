@@ -1,7 +1,7 @@
 {
   "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
   "parser": "@typescript-eslint/parser",
-  "plugins": ["@typescript-eslint", "simple-import-sort"],
+  "plugins": ["@typescript-eslint", "simple-import-sort", "@stylistic"],
   "root": true,
   "rules": {
     "no-cond-assign": "error",
@@ -41,8 +41,8 @@
     "no-undef": "error",
     "no-undefined": "error",
     "comma-dangle": ["error", "never"],
-    "@typescript-eslint/semi": ["error", "never"],
-    "semi": ["error", "never"],
+    "@stylistic/semi": ["error", "never"],
+    "semi": "off",
     "no-shadow": "off",
     "@typescript-eslint/no-shadow": "error",
     "no-unused-vars": "off",

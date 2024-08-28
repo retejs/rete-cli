@@ -55,7 +55,11 @@ export class Formatter {
 
     return formatter.format(results
       .map(this.sortMessages)
-      .map(this.toESLintResult)
+      .map(this.toESLintResult),
+    {
+      cwd: process.cwd(),
+      rulesMeta: {}
+    }
     )
   }
 }

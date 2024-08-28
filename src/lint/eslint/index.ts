@@ -1,4 +1,4 @@
-import { ESLint as OriginESLint } from 'eslint'
+import { loadESLint } from 'eslint'
 
 import { BaseLinter } from '../base'
 import { LintMessage, LintResult } from '../results'
@@ -7,7 +7,11 @@ export class ESLint implements BaseLinter {
   constructor(private options: { src: string, fix?: boolean }) {}
 
   async run(): Promise<LintResult[]> {
-    const instance = new OriginESLint({
+    const originESLint = await loadESLint({
+      useFlatConfig: false
+    })
+
+    const instance = new originESLint({
       fix: this.options.fix,
       useEslintrc: true
     })
@@ -17,7 +21,7 @@ export class ESLint implements BaseLinter {
     ])
 
     if (this.options.fix) {
-      await OriginESLint.outputFixes(results)
+      await originESLint.outputFixes(results)
     }
 
     return results.map(({ filePath, messages }) => {
