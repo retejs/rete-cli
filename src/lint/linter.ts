@@ -3,32 +3,28 @@ import { join } from 'path'
 import { SOURCE_FOLDER } from '../consts'
 import { ESLint } from './eslint'
 import { Formatter } from './formatter'
-import { makeRelativePath, mergeResults } from './results'
+import { LinterRunner } from './runner'
 import { TypeCheck } from './type-check'
 import { TypeCoverage } from './type-coverage'
 
 export async function lint(fix?: boolean, quiet?: boolean) {
   const src = join(process.cwd(), SOURCE_FOLDER)
 
-  const linters = [
-    new ESLint({ src, fix }),
-    new TypeCoverage({ src }),
-    new TypeCheck({ config: 'tsconfig.json' })
-  ]
+  const runner = new LinterRunner()
 
-  const allResults = (await Promise.all(linters.map(linter => linter.run())))
-    .flat()
-    .map(makeRelativePath)
-  const mergedResults = mergeResults(allResults)
+  runner.addLinter(new ESLint({ src, fix }))
+  runner.addLinter(new TypeCoverage({ src }))
+  runner.addLinter(new TypeCheck({ config: 'tsconfig.json' }))
 
-  const errorResults = mergedResults.map(result => {
+  const results = await runner.run()
+  const errorResults = results.map(result => {
     return {
       ...result,
       messages: result.messages.filter(message => message.severity === 2)
     }
   })
   const formatter = new Formatter()
-  const resultText = await formatter.format(quiet ? errorResults : mergedResults)
+  const resultText = await formatter.format(quiet ? errorResults : results)
 
   console.log(resultText)
 }

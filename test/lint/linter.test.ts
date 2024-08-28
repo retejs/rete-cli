@@ -56,13 +56,13 @@ describe('Linter', () => {
     }))
 
     ;(ESLint as jest.Mock<any>).mockReturnValue({
-      run: () => ({ filePath: 'file1', messages: [message1] })
+      run: () => ([{ filePath: 'file1', messages: [message1] }])
     })
     ;(TypeCoverage as jest.Mock<any>).mockReturnValue({
-      run: () => ({ filePath: 'file1', messages: [message2] })
+      run: () => ([{ filePath: 'file1', messages: [message2] }])
     })
     ;(TypeCheck as jest.Mock<any>).mockReturnValue({
-      run: () => ({ filePath: 'file2', messages: [message1] })
+      run: () => ([{ filePath: 'file2', messages: [message1] }])
     })
 
     await lint()
