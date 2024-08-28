@@ -49,11 +49,27 @@ export class Formatter {
       messages
     }
   }
+  private normalizeMessages(result: LintResult) {
+    const newLineRegex = /[\s\n]{2,}/g
+
+    const messages = result.messages.map(message => {
+      return {
+        ...message,
+        message: message.message.replace(newLineRegex, ' ')
+      }
+    })
+
+    return {
+      ...result,
+      messages
+    }
+  }
 
   async format(results: LintResult[]) {
     const formatter = await this.eslint.loadFormatter('stylish')
 
     return formatter.format(results
+      .map(this.normalizeMessages)
       .map(this.sortMessages)
       .map(this.toESLintResult),
     {

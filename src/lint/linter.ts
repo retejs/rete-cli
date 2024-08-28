@@ -1,6 +1,6 @@
 import { join } from 'path'
 
-import { SOURCE_FOLDER } from '../consts'
+import { SOURCE_FOLDER, TEST_FOLDER } from '../consts'
 import { ESLint } from './eslint'
 import { Formatter } from './formatter'
 import { LinterRunner } from './runner'
@@ -9,10 +9,11 @@ import { TypeCoverage } from './type-coverage'
 
 export async function lint(fix?: boolean, quiet?: boolean) {
   const src = join(process.cwd(), SOURCE_FOLDER)
+  const test = join(process.cwd(), TEST_FOLDER)
 
   const runner = new LinterRunner()
 
-  runner.addLinter(new ESLint({ src, fix }))
+  runner.addLinter(new ESLint({ targets: [src, test], fix }))
   runner.addLinter(new TypeCoverage({ src }))
   runner.addLinter(new TypeCheck({ config: 'tsconfig.json' }))
 

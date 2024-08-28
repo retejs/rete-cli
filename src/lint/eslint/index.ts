@@ -4,21 +4,19 @@ import { BaseLinter } from '../base'
 import { LintMessage, LintResult } from '../results'
 
 export class ESLint implements BaseLinter {
-  constructor(private options: { src: string, fix?: boolean }) {}
+  constructor(private options: { targets: string[], fix?: boolean }) {}
 
   async run(): Promise<LintResult[]> {
     const originESLint = await loadESLint({
-      useFlatConfig: false
+      useFlatConfig: true
     })
 
     const instance = new originESLint({
       fix: this.options.fix,
-      useEslintrc: true
+      errorOnUnmatchedPattern: false
     })
 
-    const results = await instance.lintFiles([
-      `${this.options.src}/**/*.{ts,tsx}`
-    ])
+    const results = await instance.lintFiles(this.options.targets)
 
     if (this.options.fix) {
       await originESLint.outputFixes(results)
