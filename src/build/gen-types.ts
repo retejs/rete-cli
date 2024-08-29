@@ -17,7 +17,7 @@ export function getDTSPath(srcScript: string, distPath: string, packageDirectory
 
 export async function generateTypes(outputDirectories: string[]) {
   const config = await readTSConfig(process.cwd())
-  const target = config?.compilerOptions?.target || 'es5'
+  const target = config?.compilerOptions?.target ?? 'es5'
 
   for (let i = 0; i < outputDirectories.length; i++) {
     const outputDirectory = outputDirectories[i]
@@ -31,6 +31,8 @@ export async function generateTypes(outputDirectories: string[]) {
       '--declarationMap',
       '--downlevelIteration',
       '--emitDeclarationOnly'
-    ], { stdio: i === 0 ? 'inherit' : 'ignore' })
+    ], { stdio: i === 0
+      ? 'inherit'
+      : 'ignore' })
   }
 }

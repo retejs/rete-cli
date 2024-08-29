@@ -10,7 +10,7 @@ import test from './test'
 
 const program = createCommand()
 
-program.version(require('../package.json').version)
+program.version((require('../package.json') as { version: string }).version)
 
 program
   .command('build')
@@ -19,17 +19,17 @@ program
   .option('-w --watch')
   .option('-o --output <path>')
   .option('-v --verbose')
-  .action((options: { config: string, watch?: boolean, output?: string, verbose?: boolean }) => {
+  .action(async (options: { config: string, watch?: boolean, output?: string, verbose?: boolean }) => {
     if (options.verbose) setVerbose(true)
-    build(options.config, options.watch, options.output?.split(','))
+    await build(options.config, options.watch, options.output?.split(','))
   })
 
 program
   .command('lint')
   .description('Lint using ESLint and TS parser')
   .option('--fix')
-  .action((options: { fix?: boolean }) => {
-    lint(options.fix)
+  .action(async (options: { fix?: boolean }) => {
+    await lint(options.fix)
   })
 
 program
@@ -37,7 +37,9 @@ program
   .description('Generate API docs')
   .option('--entries <entries>', 'Comma-separated list of entry points')
   .action(async (options: { entries?: string }) => {
-    await doc(options.entries ? options.entries.split(',') : void 0)
+    await doc(options.entries
+      ? options.entries.split(',')
+      : void 0)
   })
 
 program
@@ -45,8 +47,8 @@ program
   .description('Run tests')
   .description('Run tests using Jest')
   .option('-w --watch')
-  .action((options: { watch?: boolean }) => {
-    test(options.watch)
+  .action(async (options: { watch?: boolean }) => {
+    await test(options.watch)
   })
 
 program.parse(process.argv)

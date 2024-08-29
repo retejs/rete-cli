@@ -25,7 +25,7 @@ export function makeRelativePath<T extends LintResult>(result: T): T {
 }
 
 export function mergeResults<T extends LintResult>(results: T[]): T[] {
-  return results.reduce((acc, result) => {
+  return results.reduce<T[]>((acc, result) => {
     const existingResult = acc.find(r => r.filePath === result.filePath)
 
     if (existingResult) {
@@ -35,5 +35,5 @@ export function mergeResults<T extends LintResult>(results: T[]): T[] {
     }
 
     return acc
-  }, [] as T[])
+  }, [])
 }

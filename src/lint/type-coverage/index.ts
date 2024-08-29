@@ -10,17 +10,13 @@ export class TypeCoverage implements BaseLinter {
   async run(): Promise<LintResult[]> {
     const result = await lint(this.options.src, { strict: true, notOnlyInCWD: true })
 
-    const groups = result.anys.reduce((acc, any) => {
-      if (!acc[any.file]) {
-        acc[any.file] = []
-      }
-
+    const groups = result.anys.reduce<Record<string, AnyInfo[]>>((acc, any) => {
       acc[any.file].push(any)
       return acc
-    }, {} as Record<string, AnyInfo[]>)
+    }, Object.fromEntries(result.anys.map(any => [any.file, []])))
 
     return Object.entries(groups).map(([file, anys]) => {
-      return <LintResult>{
+      return {
         filePath: file,
         messages: anys.map(any => ({
           ruleId: 'type-coverage-any',
@@ -31,7 +27,7 @@ export class TypeCoverage implements BaseLinter {
           column: any.character + 1,
           endColumn: any.character + 1 + (any.text.length || 1)
         }))
-      }
+      } satisfies LintResult
     })
   }
 }

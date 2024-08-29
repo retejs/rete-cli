@@ -1,4 +1,3 @@
-/* eslint-disable no-undefined */
 import fs from 'fs'
 import { join } from 'path'
 import { Plugin } from 'rollup'

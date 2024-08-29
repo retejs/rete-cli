@@ -16,16 +16,18 @@ export class TypeCheck implements BaseLinter {
 
     return tsDiagnostics.map(diagnostic => {
       const data: LintResult = {
-        filePath: diagnostic.getSourceFile()?.getFilePath() || '',
-        messages: [{
-          ruleId: 'typescript',
-          message: getMessage(diagnostic),
-          severity: 2,
-          line: diagnostic.getLineNumber() || 0,
-          endLine: diagnostic.getLineNumber() || 0,
-          column: diagnostic.getStart() || 0,
-          endColumn: (diagnostic.getStart() || 0) + (diagnostic.getLength() || 1)
-        }]
+        filePath: diagnostic.getSourceFile()?.getFilePath() ?? '',
+        messages: [
+          {
+            ruleId: 'typescript',
+            message: getMessage(diagnostic),
+            severity: 2,
+            line: diagnostic.getLineNumber() ?? 0,
+            endLine: diagnostic.getLineNumber() ?? 0,
+            column: diagnostic.getStart() ?? 0,
+            endColumn: (diagnostic.getStart() ?? 0) + (diagnostic.getLength() ?? 1)
+          }
+        ]
       }
 
       return data
