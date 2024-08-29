@@ -72,7 +72,7 @@ describe('Formatter', () => {
         usedDeprecatedRules: expect.any(Array),
         warningCount: expect.any(Number)
       }
-    ])
+    ], expect.any(Object))
   })
 
   it('sum up error and warning counts', async () => {
@@ -106,7 +106,7 @@ describe('Formatter', () => {
         usedDeprecatedRules: [],
         warningCount: 1
       }
-    ])
+    ], expect.any(Object))
   })
 
   it('sorts messages by line and column', async () => {
@@ -140,6 +140,6 @@ describe('Formatter', () => {
         usedDeprecatedRules: expect.any(Array),
         warningCount: expect.any(Number)
       }
-    ])
+    ], expect.any(Object))
   })
 })
