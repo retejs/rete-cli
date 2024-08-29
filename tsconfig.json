@@ -1,8 +1,6 @@
 {
 	"extends": "./configs/tsconfig.json",
 	"compilerOptions": {
-		"outDir": "bin",
-		"declaration": true,
 		"target": "ES2018",
 		"moduleResolution": "Node",
 		"module": "CommonJS",
@@ -13,5 +11,5 @@
 		"noUnusedLocals": true,
 		"skipLibCheck": true
 	},
-	"include": ["src"],
+	"include": ["src", "test"],
 }
