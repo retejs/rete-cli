@@ -142,4 +142,40 @@ describe('Formatter', () => {
       }
     ], expect.any(Object))
   })
+
+  it('normalizes messages by replacing new lines', async () => {
+    const { format } = mockEslint()
+    const formatter = new Formatter()
+
+    await formatter.format([
+      {
+        ...result1,
+        messages: [
+          {
+            ...message1,
+            message: 'message\na\t\nb  \nc'
+          }
+        ]
+      }
+    ])
+
+    expect(format).toHaveBeenCalledWith([
+      {
+        ...result1,
+        messages: [
+          {
+            ...message1,
+            message: 'message a b c'
+          }
+        ],
+        errorCount: expect.any(Number),
+        fatalErrorCount: expect.any(Number),
+        fixableErrorCount: expect.any(Number),
+        fixableWarningCount: expect.any(Number),
+        suppressedMessages: expect.any(Array),
+        usedDeprecatedRules: expect.any(Array),
+        warningCount: expect.any(Number)
+      }
+    ], expect.any(Object))
+  })
 })
