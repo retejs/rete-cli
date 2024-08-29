@@ -51,12 +51,12 @@ export class Formatter {
   }
 
   private normalizeMessages(result: LintResult) {
-    const newLineRegex = /[\s\n]{2,}/g
-
     const messages = result.messages.map(message => {
       return {
         ...message,
-        message: message.message.replace(newLineRegex, ' ')
+        message: message.message.split(/\n/g)
+          .map(line => line.trim())
+          .join(' ')
       }
     })
 

@@ -153,7 +153,7 @@ describe('Formatter', () => {
         messages: [
           {
             ...message1,
-            message: 'message\na\t\nb  \nc'
+            message: 'message\na\t\nb  \nc \n\td\t\n  e'
           }
         ]
       }
@@ -165,7 +165,7 @@ describe('Formatter', () => {
         messages: [
           {
             ...message1,
-            message: 'message a b c'
+            message: 'message a b c d e'
           }
         ],
         errorCount: expect.any(Number),
