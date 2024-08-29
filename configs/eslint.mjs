@@ -133,11 +133,6 @@ export default tseslint.config(
         max: 1,
       }],
 
-      quotes: ['error', 'single', {
-        avoidEscape: true,
-        allowTemplateLiterals: true,
-      }],
-
       'space-before-blocks': ['error', 'always'],
       'space-in-parens': ['error', 'never'],
 
@@ -165,7 +160,12 @@ export default tseslint.config(
       'padded-blocks': ['error', 'never'],
       'spaced-comment': ['error', 'always'],
       '@typescript-eslint/no-unsafe-return': 'warn',
+      '@typescript-eslint/no-unsafe-argument': 'warn',
+      '@typescript-eslint/no-unsafe-assignment': 'warn',
+      '@typescript-eslint/no-unsafe-member-access': 'warn',
+      '@typescript-eslint/no-unsafe-call': 'warn',
       '@typescript-eslint/no-unnecessary-type-parameters': 'warn',
+      '@typescript-eslint/no-unnecessary-condition': 'warn',
       '@typescript-eslint/no-confusing-void-expression': 'warn',
       '@typescript-eslint/no-non-null-assertion': 'warn',
       '@typescript-eslint/no-dynamic-delete': 'warn',
@@ -174,7 +174,10 @@ export default tseslint.config(
       '@stylistic/semi': ['error', 'never'],
       '@stylistic/padded-blocks': ['error', 'never'],
       '@stylistic/object-curly-spacing': ['error', 'always'],
-      '@stylistic/quotes': ['error', 'single'],
+      '@stylistic/quotes': ['error', 'single', {
+        avoidEscape: true,
+        allowTemplateLiterals: true,
+      }],
       '@stylistic/function-call-argument-newline': ['error', 'consistent'],
       '@stylistic/space-before-function-paren': ['error', {
         anonymous: 'always',
@@ -196,15 +199,14 @@ export default tseslint.config(
       '@stylistic/no-extra-parens': ['error', 'all', { 'ignoreJSX': 'multi-line' }],
       '@stylistic/arrow-parens': ['error', 'as-needed'],
       '@stylistic/no-confusing-arrow': "off",
-      '@stylistic/array-element-newline': ['error', 'consistent'],
+      '@stylistic/array-element-newline': 'off',
       '@typescript-eslint/restrict-template-expressions': ['error', { 'allowNumber': true }],
       '@stylistic/lines-around-comment': ['error', { 'beforeBlockComment': false, 'beforeLineComment': false }],
-      '@stylistic/lines-between-class-members': ['error', {
-        enforce: [
-          { blankLine: "never", prev: "*", next: "*" },
-          { blankLine: "always", prev: "*", next: "method" },
-        ]
-      }]
+      '@stylistic/lines-between-class-members': 'off',
+      '@stylistic/array-bracket-newline': ['error', 'consistent'],
+      '@stylistic/dot-location': ['error', 'property'],
+      '@typescript-eslint/prefer-nullish-coalescing': 'warn',
+      '@stylistic/operator-linebreak': ['error', 'before'],
     }
   },
   {
