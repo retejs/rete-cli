@@ -6,7 +6,7 @@ import { SOURCE_FOLDER } from '../consts'
 export async function doc(entries?: string[]) {
   const root = process.cwd()
   const outputDir = join(root, 'docs')
-  const entryPoints = (entries || [join(SOURCE_FOLDER, 'index.ts')]).map(entry => join(root, entry))
+  const entryPoints = (entries ?? [join(SOURCE_FOLDER, 'index.ts')]).map(entry => join(root, entry))
   const app = await Application.bootstrap({
     excludeNotDocumented: true,
     excludePrivate: true,

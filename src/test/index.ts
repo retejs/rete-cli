@@ -8,9 +8,11 @@ export default async function (watch?: boolean) {
       '--testEnvironment', 'node',
       '--collectCoverageFrom', 'src/**/*',
       '--testMatch', '**/*.test.ts',
-      ...(watch ? ['--watch'] : [])
+      ...watch
+        ? ['--watch']
+        : []
     ], { stdio: 'inherit' })
-  } catch (e) {
+  } catch (_error) {
     process.exit(1)
   }
 }

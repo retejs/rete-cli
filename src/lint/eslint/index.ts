@@ -29,9 +29,9 @@ export class ESLint implements BaseLinter {
           const result: LintMessage = {
             column: message.column,
             line: message.line,
-            endColumn: message.endColumn || message.column,
-            endLine: message.endLine || message.line,
-            ruleId: message.ruleId || null,
+            endColumn: message.endColumn ?? message.column,
+            endLine: message.endLine ?? message.line,
+            ruleId: message.ruleId ?? null,
             message: message.message,
             severity: message.severity
           }

@@ -25,7 +25,9 @@ export async function lint(fix?: boolean, quiet?: boolean) {
     }
   })
   const formatter = new Formatter()
-  const resultText = await formatter.format(quiet ? errorResults : results)
+  const resultText = await formatter.format(quiet
+    ? errorResults
+    : results)
 
   console.log(resultText)
 }
