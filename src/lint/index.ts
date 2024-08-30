@@ -1,8 +1,8 @@
-import { lint } from './linter'
+import { lint, LintOptions } from './linter'
 
-export default async function (fix?: boolean, quiet?: boolean) {
+export default async function (options: LintOptions) {
   try {
-    await lint(fix, quiet)
+    await lint(options)
   } catch (e) {
     console.error(e)
     process.exit(1)

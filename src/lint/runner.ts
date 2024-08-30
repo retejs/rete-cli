@@ -1,5 +1,5 @@
 import { BaseLinter } from './base'
-import { LintResult, makeRelativePath, mergeResults } from './results'
+import { LintResult, makeRelativePath, mergeResults, mergeRules, RuleMeta } from './results'
 
 export class LinterRunner {
   private linters: BaseLinter[] = []
@@ -10,13 +10,18 @@ export class LinterRunner {
 
   async run() {
     const results: LintResult[] = []
+    const rules: RuleMeta[] = []
 
     for (const linter of this.linters) {
       const linterResults = await linter.run()
 
-      results.push(...linterResults)
+      results.push(...linterResults.results)
+      rules.push(...linterResults.rules)
     }
 
-    return mergeResults(results.map(makeRelativePath))
+    return {
+      results: mergeResults(results.map(makeRelativePath)),
+      rules: mergeRules(rules)
+    }
   }
 }

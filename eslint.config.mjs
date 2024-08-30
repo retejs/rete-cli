@@ -6,6 +6,7 @@ export default tseslint.config(
   {
     rules: {
       'no-console': 'off',
+      'no-undefined': 'off',
       '@typescript-eslint/no-require-imports': 'off',
     }
   }

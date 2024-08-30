@@ -1,5 +1,10 @@
-import { LintResult } from './results'
+import { LintResult, RuleMeta } from './results'
+
+export interface LinterResponse {
+  rules: RuleMeta[]
+  results: LintResult[]
+}
 
 export interface BaseLinter {
-  run(): LintResult[] | Promise<LintResult[]>
+  run(): LinterResponse | Promise<LinterResponse>
 }

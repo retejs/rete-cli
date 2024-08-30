@@ -34,7 +34,7 @@ async function build(config: ReteConfig, pkg: Pkg, outputDirectories: string[]) 
 
   await safeExec(() => generateTypes(outputDirectories), messages.typesFail, 1)
   console.log(messages.typesSuccess)
-  await safeExec(lint, messages.lintingFail, 1)
+  await safeExec(() => lint({ output: ['stdout'] }), messages.lintingFail, 1)
   console.log(messages.lintingSuccess)
 
   const targets = getRollupConfig(config, outputs, pkg, outputDirectories)
