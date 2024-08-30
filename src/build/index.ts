@@ -21,7 +21,9 @@ const outputs: OutputOptions[] = [
 
 async function buildForDev(config: ReteConfig, pkg: Pkg, outputDirectories: string[]) {
   const targetConfig = getRollupConfig(config, outputs, pkg, outputDirectories)
-  const name = Array.from(new Set(Array.isArray(config) ? config.map(c => c.name) : [config.name])).join(', ')
+  const name = Array.from(new Set(Array.isArray(config)
+    ? config.map(c => c.name)
+    : [config.name])).join(', ')
 
   return await buildDev(name, targetConfig.map(c => c.config), outputDirectories)
 }
@@ -32,14 +34,14 @@ async function build(config: ReteConfig, pkg: Pkg, outputDirectories: string[]) 
 
   await safeExec(() => generateTypes(outputDirectories), messages.typesFail, 1)
   console.log(messages.typesSuccess)
-  await safeExec(lint, messages.lintingFail, 1)
+  await safeExec(() => lint({ output: ['stdout'] }), messages.lintingFail, 1)
   console.log(messages.lintingSuccess)
 
   const targets = getRollupConfig(config, outputs, pkg, outputDirectories)
 
   for (const target of targets) {
     const bundle = await rollup(target.config)
-    const distDirectory = target.options.output || ''
+    const distDirectory = target.options.output ?? ''
 
     for (const output of target.config.output) {
       await bundle.generate(output)
@@ -56,8 +58,8 @@ export default async (configPath: string, watch?: boolean, outputDirectories?: s
   const config = importReteConfig(fullPath)
 
   const packagePath = join(process.cwd(), 'package.json')
-  const pkg = require(packagePath)
-  const output = outputDirectories || [join(process.cwd(), 'dist')]
+  const pkg = require(packagePath) as Pkg
+  const output = outputDirectories ?? [join(process.cwd(), 'dist')]
 
   if (watch) {
     await buildForDev(config, pkg, output)

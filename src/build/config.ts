@@ -23,7 +23,7 @@ export interface OutputOptions {
 export type RollupConfig = RollupOptions & { output: RollupOutputOptions[] }
 
 export function getRollupConfig(options: ReteConfig, outputs: OutputOptions[], pkg: Pkg, outputDirectories: string[]): ({
-  options: ReteOptions,
+  options: ReteOptions
   config: RollupConfig
 }[]) {
   if (Array.isArray(options)) {
@@ -42,7 +42,7 @@ export function getRollupConfig(options: ReteConfig, outputs: OutputOptions[], p
   } = options
   const localOutputDirectories = outputDirectories.map(path => join(path, outputPath))
   const extensions = ['.js', '.ts', '.jsx', '.tsx']
-  const babelPresets = babelOptions?.presets || [
+  const babelPresets = babelOptions?.presets ?? [
     [require('@babel/preset-env')],
     require('@babel/preset-typescript')
   ]
@@ -63,7 +63,9 @@ export function getRollupConfig(options: ReteConfig, outputs: OutputOptions[], p
       banner: getBanner(pkg),
       globals,
       exports: 'named' as const,
-      plugins: minify ? [terser()] : []
+      plugins: minify
+        ? [terser()]
+        : []
     }) as RollupOutputOptions)).flat(),
     watch: {
       include: `${SOURCE_FOLDER}/**`
@@ -73,40 +75,52 @@ export function getRollupConfig(options: ReteConfig, outputs: OutputOptions[], p
       /^@babel\/runtime.*$/
     ],
     plugins: [
-      ...(head ? [
-        copy({
-          targets: [
-            { src: 'README.md', dest: localOutputDirectories }
-          ]
-        }),
-        ...outputDirectories.map(output => {
-          const bundlesPath = join(output, outputPath)
+      ...head
+        ? [
+          copy({
+            targets: [
+              { src: 'README.md', dest: localOutputDirectories }
+            ]
+          }),
+          ...outputDirectories.map(output => {
+            const bundlesPath = join(output, outputPath)
 
-          return preparePackageJson(pkg, bundlesPath, (config) => {
-            for (const { suffix, entries } of outputs) {
-              for (const entry of entries) {
-                config[entry] = getBundleName(suffix)
+            return preparePackageJson(pkg, bundlesPath, config => {
+              for (const { suffix, entries } of outputs) {
+                for (const entry of entries) {
+                  config[entry] = getBundleName(suffix)
+                }
               }
-            }
 
-            config.types = getDTSPath(input, output, bundlesPath)
-            config.typings = config.types
+              config.types = getDTSPath(input, output, bundlesPath)
+              config.typings = config.types
+            })
           })
-        })
-      ] : []),
-      ...(nodeResolveOptions === false ? [] : [nodeResolve({
-        extensions,
-        ...(nodeResolveOptions || {})
-      })]),
+        ]
+        : [],
+      ...nodeResolveOptions === false
+        ? []
+        : [
+          nodeResolve({
+            extensions,
+            ...nodeResolveOptions ?? {}
+          })
+        ],
       babel({
         exclude: 'node_modules/**',
         babelrc: false,
         presets: babelPresets,
-        plugins: bundled ? babelOptions?.plugins : [
-          require('@babel/plugin-transform-runtime'),
-          ...(babelOptions?.plugins ? babelOptions.plugins : [])
-        ],
-        babelHelpers: bundled ? 'bundled' : 'runtime',
+        plugins: bundled
+          ? babelOptions?.plugins
+          : [
+            require('@babel/plugin-transform-runtime'),
+            ...babelOptions?.plugins
+              ? babelOptions.plugins
+              : []
+          ],
+        babelHelpers: bundled
+          ? 'bundled'
+          : 'runtime',
         extensions
       }),
       ...plugins

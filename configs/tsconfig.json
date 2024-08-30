@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+      "strict": true,
+      "skipLibCheck": true,
+      "plugins": [
+        {
+          "name": "ts-plugin-type-coverage",
+          "strict": true,
+          "notOnlyInCWD": true
+        }
+      ]
+    }
+  }

@@ -9,7 +9,7 @@ export function setVerbose(enabled: boolean) {
   verbose = enabled
 }
 
-export async function safeExec<T>(func: () => Promise<T>, failMessage: string, exit?: number): Promise<T | unknown> {
+export async function safeExec<T>(func: () => Promise<T>, failMessage: string, exit?: number): Promise<unknown> {
   try {
     await func()
   } catch (error) {
@@ -28,7 +28,9 @@ interface TSConfig {
 
 export async function readTSConfig(cwd: string): Promise<null | TSConfig> {
   const configPath = join(cwd, 'tsconfig.json')
-  const exists = await fs.promises.access(configPath).then(() => true).catch(() => false)
+  const exists = await fs.promises.access(configPath)
+    .then(() => true)
+    .catch(() => false)
 
   if (!exists) return null
 
