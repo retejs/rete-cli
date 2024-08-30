@@ -1,3 +1,10 @@
+## [2.0.1](https://github.com/retejs/rete-cli/compare/v2.0.0...v2.0.1) (2024-08-30)
+
+
+### Bug Fixes
+
+* **lint:** type coverage end line and column ([7b4e900](https://github.com/retejs/rete-cli/commit/7b4e900bd246436b735e143f968dee52a76fd9ca))
+
 # [2.0.0](https://github.com/retejs/rete-cli/compare/v1.2.0...v2.0.0) (2024-08-30)
 
 
