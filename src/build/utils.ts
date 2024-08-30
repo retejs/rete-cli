@@ -9,12 +9,15 @@ export function setVerbose(enabled: boolean) {
   verbose = enabled
 }
 
+export class ExecError extends Error {}
+
 export async function safeExec<T>(func: () => Promise<T>, failMessage: string, exit?: number): Promise<unknown> {
   try {
     await func()
   } catch (error) {
     console.error(failMessage)
     if (verbose) console.error(error)
+    else if (error instanceof ExecError) console.error(error.message)
     if (Number.isInteger(exit)) process.exit(exit)
     return error
   }
@@ -24,6 +27,7 @@ interface TSConfig {
   compilerOptions?: Omit<CompilerOptions, 'target'> & {
     target?: keyof typeof ScriptTarget
   }
+  include?: string[]
 }
 
 export async function readTSConfig(cwd: string): Promise<null | TSConfig> {

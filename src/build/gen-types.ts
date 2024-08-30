@@ -1,8 +1,9 @@
 import execa from 'execa'
+import fs from 'fs'
 import { join, relative } from 'path'
 
 import { SOURCE_FOLDER } from '../consts'
-import { readTSConfig } from './utils'
+import { ExecError, readTSConfig } from './utils'
 
 export const typesDirectoryName = '_types'
 
@@ -18,15 +19,17 @@ export function getDTSPath(srcScript: string, distPath: string, packageDirectory
 export async function generateTypes(outputDirectories: string[]) {
   const config = await readTSConfig(process.cwd())
   const target = config?.compilerOptions?.target ?? 'es5'
+  const includeFolders = config?.include
 
   for (let i = 0; i < outputDirectories.length; i++) {
     const outputDirectory = outputDirectories[i]
+    const typesDir = join(outputDirectory, typesDirectoryName)
 
     await execa('tsc', [
       '-d',
       '--pretty',
       '--target', target,
-      '--outDir', join(outputDirectory, typesDirectoryName),
+      '--outDir', typesDir,
       '--skipLibCheck',
       '--declarationMap',
       '--downlevelIteration',
@@ -34,5 +37,26 @@ export async function generateTypes(outputDirectories: string[]) {
     ], { stdio: i === 0
       ? 'inherit'
       : 'ignore' })
+
+    if (includeFolders && includeFolders.length > 1) {
+      await normalizeTypes(outputDirectory, typesDir)
+    }
   }
 }
+
+/**
+ * move the src folder to the root of the types directory
+ */
+async function normalizeTypes(outputDirectory: string, typesDir: string) {
+  const existsSrcFolder = await fs.promises.access(join(typesDir, SOURCE_FOLDER))
+    .then(() => true)
+    .catch(() => false)
+  const tmp = join(outputDirectory, '_tmp')
+
+  if (!existsSrcFolder) throw new ExecError('src folder not found when multiple include are specified')
+
+  await fs.promises.rename(typesDir, tmp)
+  await fs.promises.rename(join(tmp, SOURCE_FOLDER), typesDir)
+  await fs.promises.rm(tmp, { recursive: true })
+}
+
