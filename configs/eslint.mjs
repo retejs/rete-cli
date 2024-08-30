@@ -48,22 +48,20 @@ export default tseslint.config(
   ...tseslint.configs.stylisticTypeChecked,
   stylistic.configs['all-flat'],
   {
+    languageOptions: {
+      parser: tsParser,
+      parserOptions: {
+        projectService: true
+      },
+    },
+  },
+  {
     files: ['src/**/*.{ts,tsx}', 'test/**/*.{ts,tsx}'],
     plugins: {
       '@typescript-eslint': typescriptEslint,
       'simple-import-sort': simpleImportSort,
       '@stylistic': stylistic,
       '@stylistic/ts': stylisticEslintPluginTs,
-    },
-    languageOptions: {
-      parser: tsParser
-    },
-  },
-  {
-    languageOptions: {
-      parserOptions: {
-        projectService: true
-      },
     },
     rules: {
       '@typescript-eslint/consistent-type-definitions': 'off',
