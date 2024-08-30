@@ -1,3 +1,4 @@
+/* eslint-disable @stylistic/semi-style */
 /* eslint-disable @typescript-eslint/naming-convention */
 import { afterEach, beforeEach, describe, expect, it, jest } from '@jest/globals'
 
@@ -56,16 +57,25 @@ describe('Linter', () => {
     }))
 
     ;(ESLint as jest.Mock<any>).mockReturnValue({
-      run: () => ([{ filePath: 'file1', messages: [message1] }])
+      run: () => ({
+        results: [{ filePath: 'file1', messages: [message1] }],
+        rules: []
+      })
     })
     ;(TypeCoverage as jest.Mock<any>).mockReturnValue({
-      run: () => ([{ filePath: 'file1', messages: [message2] }])
+      run: () => ({
+        results: [{ filePath: 'file1', messages: [message2] }],
+        rules: []
+      })
     })
     ;(TypeCheck as jest.Mock<any>).mockReturnValue({
-      run: () => ([{ filePath: 'file2', messages: [message1] }])
+      run: () => ({
+        results: [{ filePath: 'file2', messages: [message1] }],
+        rules: []
+      })
     })
 
-    await lint()
+    await lint({ output: ['stdout'] })
 
     expect(format).toHaveBeenCalledTimes(1)
     expect(format).toHaveBeenCalledWith([
