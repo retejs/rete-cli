@@ -1,3 +1,10 @@
+## [2.0.2](https://github.com/retejs/rete-cli/compare/v2.0.1...v2.0.2) (2024-08-30)
+
+
+### Bug Fixes
+
+* src types ([b0005d6](https://github.com/retejs/rete-cli/commit/b0005d6cac580d640d0fb38f8d6f604b9f33002e))
+
 ## [2.0.1](https://github.com/retejs/rete-cli/compare/v2.0.0...v2.0.1) (2024-08-30)
 
 
