@@ -10,7 +10,7 @@
   },
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
-    "dev": "tsc --watch",
+    "dev": "tsc --watch -p tsconfig.build.json",
     "lint": "eslint src",
     "test": "jest --preset ts-jest --coverage --testEnvironment node --collectCoverageFrom 'src/**/*' --testMatch '**/*.test.ts'"
   },
