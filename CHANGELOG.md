@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/retejs/rete-cli/compare/v1.1.0...v1.2.0) (2024-08-30)
+
+
+### Features
+
+* fixed release ([ff92463](https://github.com/retejs/rete-cli/commit/ff924633d6ee09750ad5b8572e954f100d06e8aa))
+
 ## [1.1.0](https://github.com/retejs/rete-cli/compare/v1.0.5...v1.1.0) (2024-08-30)
 
 Fix broken release
