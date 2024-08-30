@@ -1,3 +1,4 @@
+/* eslint-disable @stylistic/semi-style */
 import { describe, expect, it, jest } from '@jest/globals'
 import { ESLint } from 'eslint'
 
