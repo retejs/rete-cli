@@ -19,14 +19,25 @@ export class TypeCoverage implements BaseLinter {
     const results = Object.entries(groups).map(([file, anys]) => {
       return {
         filePath: file,
-        messages: anys.map(any => ({
-          ruleId: getRuleId(any),
-          message: getMessages(any),
-          severity: 1,
-          line: any.line + 1,
-          column: any.character + 1,
-          endColumn: any.character + 1 + any.text.length
-        }))
+        messages: anys.map(any => {
+          const line = any.line + 1
+          const column = any.character + 1
+          const lines = any.text.split('\n')
+          const [firstLine, ...rest] = lines
+          const lastLine = [...rest].pop() ?? firstLine
+
+          return {
+            ruleId: getRuleId(any),
+            message: getMessages(any),
+            severity: 1,
+            line,
+            endLine: line + lines.length - 1,
+            column,
+            endColumn: lines.length === 1
+              ? column + lastLine.length
+              : lastLine.length
+          }
+        })
       } satisfies LintResult
     })
     const rules = Object.entries(groups)
