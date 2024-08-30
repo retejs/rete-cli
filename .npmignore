@@ -4,3 +4,5 @@ node_modules
 .github
 CODE_OF_CONDUCT.md
 CONTRIBUTING.md
+.rete-cli
+.sonar

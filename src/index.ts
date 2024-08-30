@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { createCommand } from 'commander'
+import { createCommand, Option } from 'commander'
 
 import build from './build'
 import { setVerbose } from './build/utils'
@@ -28,8 +28,16 @@ program
   .command('lint')
   .description('Lint using ESLint and TS parser')
   .option('--fix')
-  .action(async (options: { fix?: boolean }) => {
-    await lint(options.fix)
+  .addOption(new Option('--output <output...>', 'Output target')
+    .choices(['sonar', 'stdout'])
+    .default('stdout'))
+  .option('--quiet')
+  .action(async (options: { fix?: boolean, quiet?: boolean, output: ('sonar' | 'stdout')[] }) => {
+    await lint({
+      fix: options.fix,
+      quiet: options.quiet,
+      output: options.output
+    })
   })
 
 program

@@ -2,3 +2,5 @@
 node_modules
 bin
 coverage
+.rete-cli
+.sonar
