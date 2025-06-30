@@ -16,3 +16,4 @@ export default async function (watch?: boolean) {
     process.exit(1)
   }
 }
+
