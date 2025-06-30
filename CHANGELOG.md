@@ -1,3 +1,10 @@
+# [2.1.0](https://github.com/retejs/rete-cli/compare/v2.0.2...v2.1.0) (2025-06-30)
+
+
+### Features
+
+* add performance testing ([6610ca4](https://github.com/retejs/rete-cli/commit/6610ca48e3325e55f7f6ff236b601b480d110957))
+
 ## [2.0.2](https://github.com/retejs/rete-cli/compare/v2.0.1...v2.0.2) (2024-08-30)
 
 
